@@ -7,7 +7,7 @@ using UnityEngine;
 using System.IO;
 
 public class Server : MonoBehaviour {
-    [SerializeField] private int port = 8080;
+    //[SerializeField] private int port = 8080;
 
     private List<ServerClient> clients;
     private List<ServerClient> disconnectClients;
@@ -15,7 +15,7 @@ public class Server : MonoBehaviour {
     private TcpListener server;
     private bool isServerStarted;
 
-    public void Init()
+    public bool Init(int port)
     {
         DontDestroyOnLoad(this);
         clients = new List<ServerClient>();
@@ -24,14 +24,24 @@ public class Server : MonoBehaviour {
         try
         {
             server = new TcpListener(IPAddress.Any ,port);
-            server.Start();
-
-            StartListening();
-            isServerStarted = true;
+            return true;
         }
         catch (Exception e)
         {
             Debug.LogError(e.Message);
+        }
+        return false;
+    }
+
+    public void StartServer()
+    {
+        if (server != null)
+        {
+            server.Start();
+
+            StartListening();
+
+            isServerStarted = true;
         }
     }
 
@@ -42,23 +52,33 @@ public class Server : MonoBehaviour {
 
     private void AcceptTcpClient(IAsyncResult asyncResult)
     {
+        string allUser = "";
+        foreach (var sc in clients)
+        {
+            allUser += sc.clientName + '|';
+        }
+
         TcpListener listener = (TcpListener)asyncResult.AsyncState;
 
         ServerClient client = new ServerClient(listener.EndAcceptTcpClient(asyncResult), null);
 
         clients.Add(client);
 
+        StartListening();
+
+        Broadcast(ConstantData.WHO_CONNECTED+'|' + allUser, client);
+
         Debug.Log("Somebody has connected!");
     }
 
-    private bool IsClientStillConnected(TcpClient client)
+    private bool IsClientStillConnected(TcpClient tcp)
     {
         try
         {
-            if(client != null && client.Client != null && client.Connected)
+            if(tcp != null && tcp.Client != null && tcp.Connected)
             {
-                if (client.Client.Poll(0, SelectMode.SelectRead))
-                    return !(client.Client.Receive(new byte[1], SocketFlags.Peek) == 0);
+                if (tcp.Client.Poll(0, SelectMode.SelectRead))
+                    return !(tcp.Client.Receive(new byte[1], SocketFlags.Peek) == 0);
                 return true;
             } 
         }
@@ -70,9 +90,41 @@ public class Server : MonoBehaviour {
         return false;
     }
 
+    private void Broadcast(string data, List<ServerClient> clients)
+    {
+        foreach (var sc in clients)
+        {
+            try
+            {
+                StreamWriter streamWriter = new StreamWriter(sc.tcp.GetStream());
+                streamWriter.WriteLine(data);
+                streamWriter.Flush();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
+        }
+    }
+
+    private void Broadcast(string data, ServerClient client)
+    {
+        List<ServerClient> clients = new List<ServerClient> { client };
+        Broadcast(data, clients);
+    }
+
     private void OnInCommingData(ServerClient client, string data)
     {
         Debug.Log(client.clientName + ": "+ data);
+        string[] msg = data.Split('|');
+
+        switch (msg[0])
+        {
+            case ConstantData.WHO_CONNECTED_RESPONSE:
+                client.clientName = msg[1];
+                Broadcast(ConstantData.ANNOUNCE_WHO_CONNECTED+'|' + client.clientName, clients);
+                break;
+        }
     }
 
     private void Update()
@@ -85,6 +137,7 @@ public class Server : MonoBehaviour {
             {
                 client.tcp.Close();
                 disconnectClients.Add(client);
+                Debug.Log("Somebody has disconnected");
                 continue;
             }
             else
