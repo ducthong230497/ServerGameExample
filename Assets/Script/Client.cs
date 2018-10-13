@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Client : MonoBehaviour {
 
@@ -12,13 +13,22 @@ public class Client : MonoBehaviour {
     private NetworkStream networkStream;
     private StreamWriter streamWriter;
     private StreamReader streamReader;
+    public bool HasConnectedToServer { get; set; }
     public string ClientName { get; set; }
 
     private List<GameClient> players = new List<GameClient>();
+    private GameManager gameManager;
+
+    private Text announceText;
+    private void Awake()
+    {
+        gameManager = GameManager.Instance;
+    }
 
     private void Start()
     {
         DontDestroyOnLoad(this);
+        announceText = GameObject.Find("AnounceText").GetComponent<Text>();
     }
 
     public bool ConnectToServer(string host, int port)
@@ -66,6 +76,11 @@ public class Client : MonoBehaviour {
                 break;
             case ConstantData.ANNOUNCE_WHO_CONNECTED:
                 UserConnected(msg[1], false);
+                announceText.text = data;
+                break;
+            case ConstantData.WELCOME_MESSAGE:
+                announceText.text = string.Format(msg[1], ClientName);
+                StartCoroutine(MoveToLobby());
                 break;
         }
     }
@@ -86,12 +101,20 @@ public class Client : MonoBehaviour {
         }
     }
 
+    private IEnumerator MoveToLobby()
+    {
+        yield return new WaitForSeconds(2);
+        gameManager.LoadScene("LobbyScene");
+    }
+
     private void UserConnected(string name, bool host)
     {
         GameClient player = new GameClient();
         player.name = name;
         player.isHost = host;
         players.Add(player);
+
+        
     }
 
     private void CloseSocket()

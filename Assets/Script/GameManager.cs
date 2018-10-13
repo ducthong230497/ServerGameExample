@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
@@ -14,15 +16,36 @@ public class GameManager : MonoBehaviour {
     [Space(5)]
     public TextMeshProUGUI interactText;
     public Text name;
+
+    internal Server server;
     
     private string hostAddress = "127.0.0.1";
-
-    static int i = 0;
+    
     void Start () {
         Instance = this;
         DontDestroyOnLoad(this);
+        //InitServer();
 	}
 	
+    private void InitServer()
+    {
+        try
+        {
+            server = Instantiate(serverPref).GetComponent<Server>();
+            if (!server.Init(port))
+            {
+                Debug.LogError("Can not initialize server");
+                return;
+            }
+            server.StartServer();
+            interactText.SetText("Listening");
+        }
+        catch (SocketException e)
+        {
+            Debug.LogError(e.Message);
+        }
+    }
+
     public void ConnectButton()
     {
 
@@ -52,13 +75,18 @@ public class GameManager : MonoBehaviour {
             }
             server.StartServer();
             interactText.SetText("Listening");
-            Client client = Instantiate(clientPref).GetComponent<Client>();
-            client.ClientName = string.IsNullOrEmpty(name.text) ? "client" : name.text;
-            client.ConnectToServer(hostAddress, port);
+            //Client client = Instantiate(clientPref).GetComponent<Client>();
+            //client.ClientName = string.IsNullOrEmpty(name.text) ? "client" : name.text;
+            //client.ConnectToServer(hostAddress, port);
         }
         catch (Exception e)
         {
             Debug.LogError(e.Message);
         }
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 }

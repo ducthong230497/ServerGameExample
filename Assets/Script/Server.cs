@@ -7,7 +7,7 @@ using UnityEngine;
 using System.IO;
 
 public class Server : MonoBehaviour {
-    //[SerializeField] private int port = 8080;
+    private int port;
 
     private List<ServerClient> clients;
     private List<ServerClient> disconnectClients;
@@ -18,6 +18,7 @@ public class Server : MonoBehaviour {
     public bool Init(int port)
     {
         DontDestroyOnLoad(this);
+        this.port = port;
         clients = new List<ServerClient>();
         disconnectClients = new List<ServerClient>();
 
@@ -122,7 +123,15 @@ public class Server : MonoBehaviour {
         {
             case ConstantData.WHO_CONNECTED_RESPONSE:
                 client.clientName = msg[1];
-                Broadcast(ConstantData.ANNOUNCE_WHO_CONNECTED+'|' + client.clientName, clients);
+                int index = clients.Count;
+                List<ServerClient> temp = new List<ServerClient>();
+                for (int i = 0; i < index - 1; i++)
+                {
+                    temp.Add(clients[i]);
+                }
+                Broadcast(ConstantData.ANNOUNCE_WHO_CONNECTED + '|' + client.clientName, temp);
+                Broadcast(ConstantData.WELCOME_MESSAGE + "|welcome {0}", clients[index - 1]);
+                temp.Clear();
                 break;
         }
     }
