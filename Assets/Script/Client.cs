@@ -13,11 +13,12 @@ public class Client : MonoBehaviour {
     private NetworkStream networkStream;
     private StreamWriter streamWriter;
     private StreamReader streamReader;
-    public bool HasConnectedToServer { get; set; }
     public string ClientName { get; set; }
 
     private List<GameClient> players = new List<GameClient>();
     private GameManager gameManager;
+
+    public Action<string> onCreateRoomResponse;
 
     private Text announceText;
     private void Awake()
@@ -52,7 +53,7 @@ public class Client : MonoBehaviour {
         return isSocketReady;
     }
 
-    private void SendData(string data)
+    public void SendData(string data)
     {
         if (!isSocketReady) return;
 
@@ -81,6 +82,9 @@ public class Client : MonoBehaviour {
             case ConstantData.WELCOME_MESSAGE:
                 announceText.text = string.Format(msg[1], ClientName);
                 StartCoroutine(MoveToLobby());
+                break;
+            case ConstantData.CREATE_ROOM_RESPONSE:
+                onCreateRoomResponse(msg[1]);
                 break;
         }
     }

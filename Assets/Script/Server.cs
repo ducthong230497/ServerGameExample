@@ -7,6 +7,8 @@ using UnityEngine;
 using System.IO;
 
 public class Server : MonoBehaviour {
+    public static Server Instance { get; set; }
+
     private int port;
 
     private List<ServerClient> clients;
@@ -15,6 +17,13 @@ public class Server : MonoBehaviour {
     private TcpListener server;
     private bool isServerStarted;
 
+    public List<Room> listRoom;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     public bool Init(int port)
     {
         DontDestroyOnLoad(this);
@@ -22,6 +31,7 @@ public class Server : MonoBehaviour {
         clients = new List<ServerClient>();
         disconnectClients = new List<ServerClient>();
 
+        listRoom = new List<Room>();
         try
         {
             server = new TcpListener(IPAddress.Any ,port);
@@ -133,6 +143,12 @@ public class Server : MonoBehaviour {
                 Broadcast(ConstantData.WELCOME_MESSAGE + "|welcome {0}", clients[index - 1]);
                 temp.Clear();
                 break;
+            case ConstantData.CREATE_ROOM:
+                Room newRoom = new Room { roomID = 1 };
+                listRoom.Add(newRoom);
+                Broadcast(ConstantData.CREATE_ROOM_RESPONSE+ "|success", clients);
+                Debug.Log("Create new room success");
+                break;
         }
     }
 
@@ -146,7 +162,7 @@ public class Server : MonoBehaviour {
             {
                 client.tcp.Close();
                 disconnectClients.Add(client);
-                Debug.Log("Somebody has disconnected");
+                Debug.Log(client.clientName + " has disconnected");
                 continue;
             }
             else
