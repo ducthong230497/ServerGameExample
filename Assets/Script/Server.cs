@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
 using System.IO;
+using System.Linq;
 
 public class Server : MonoBehaviour {
     public static Server Instance { get; set; }
@@ -144,10 +145,35 @@ public class Server : MonoBehaviour {
                 temp.Clear();
                 break;
             case ConstantData.CREATE_ROOM:
-                Room newRoom = new Room { roomID = 1 };
+                Room newRoom = new Room();
                 listRoom.Add(newRoom);
-                Broadcast(ConstantData.CREATE_ROOM_RESPONSE+ "|success", clients);
+                newRoom.roomID = listRoom.Count;
+                Broadcast(ConstantData.CREATE_ROOM_RESPONSE+ "|success|"+listRoom.Count, clients);
                 Debug.Log("Create new room success");
+                break;
+            case ConstantData.JOIN_ROOM:
+                int roomID = Convert.ToInt32(msg[2]);
+                Room r = listRoom[roomID - 1];
+                ServerClient sc = null;
+                foreach (var item in clients)
+                {
+                    if (item.clientName == msg[1])
+                    {
+                        sc = item;
+                        break;
+                    }
+                }
+                if (r.numberPlayer == 0)
+                {
+                    r.client1 = sc;
+                    Broadcast(ConstantData.JOIN_ROOM_RESPONSE + "|1", sc);
+                }
+                if(r.numberPlayer == 1)
+                {
+                    r.client2 = sc;
+                    Broadcast(ConstantData.JOIN_ROOM_RESPONSE + "|0", sc);
+                }
+                r.numberPlayer++;
                 break;
         }
     }

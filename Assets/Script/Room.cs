@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Room : MonoBehaviour {
     public int roomID { get; set; }
-
-    public Client client1;
-    public Client client2;
+    public int numberPlayer;
+    public ServerClient client1;
+    public ServerClient client2;
 }

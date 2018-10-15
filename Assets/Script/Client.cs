@@ -18,7 +18,8 @@ public class Client : MonoBehaviour {
     private List<GameClient> players = new List<GameClient>();
     private GameManager gameManager;
 
-    public Action<string> onCreateRoomResponse;
+    public Action<string, int> onCreateRoomResponse;
+    public Action<string> onJoinRoomResponse;
 
     private Text announceText;
     private void Awake()
@@ -84,7 +85,10 @@ public class Client : MonoBehaviour {
                 StartCoroutine(MoveToLobby());
                 break;
             case ConstantData.CREATE_ROOM_RESPONSE:
-                onCreateRoomResponse(msg[1]);
+                onCreateRoomResponse(msg[1], Convert.ToInt32(msg[2]));
+                break;
+            case ConstantData.JOIN_ROOM_RESPONSE:
+                onJoinRoomResponse(msg[1]);
                 break;
         }
     }

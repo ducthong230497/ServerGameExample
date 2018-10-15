@@ -6,4 +6,6 @@ public class ConstantData {
     public const string WELCOME_MESSAGE = "welcome message";
     public const string CREATE_ROOM = "create room";
     public const string CREATE_ROOM_RESPONSE = "create room response";
+    public const string JOIN_ROOM = "join room";
+    public const string JOIN_ROOM_RESPONSE = "join room response";
 }

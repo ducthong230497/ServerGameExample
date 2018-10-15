@@ -1,16 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PopulateRoom : MonoBehaviour {
     [SerializeField] private GameObject Room;
+
     private GridLayoutGroup gridLayout;
     private Client client;
     private int amount;
+    private List<Room> listRoom;
+
 	void Start () {
         client = GameObject.Find("Client(Clone)").GetComponent<Client>();
         client.onCreateRoomResponse += OnCreateRoomResponse;
+        client.onJoinRoomResponse += OnJoinRoomResponse;
+
         gridLayout = GetComponent<GridLayoutGroup>();
 
         float screenSizeIgnorePadding = Screen.width - 2 * gridLayout.padding.left;
@@ -26,18 +32,28 @@ public class PopulateRoom : MonoBehaviour {
             Instantiate(Room, transform);
         }
 	}
-	
-	public void CreateRoom()
+
+    private void OnJoinRoomResponse(string isHost)
+    {
+        int host = Convert.ToInt32(isHost);
+        StartCoroutine(MoveToWaitingRoom());
+        if(host == 1)
+        {
+
+        }
+    }
+
+    public void CreateRoom()
     {
         client.SendData(ConstantData.CREATE_ROOM);
     }
 
-    private void OnCreateRoomResponse(string msg)
+    private void OnCreateRoomResponse(string msg, int roomID)
     {
         if (msg.Equals("success"))
         {
             Instantiate(Room, transform);
-            StartCoroutine(MoveToWaitingRoom());
+            client.SendData(ConstantData.JOIN_ROOM + "|"+client.ClientName+"|"+roomID);
         }
         else
             Debug.Log("Fail to create room");
