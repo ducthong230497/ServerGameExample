@@ -146,7 +146,9 @@ public class Server : MonoBehaviour {
                 break;
             case ConstantData.CREATE_ROOM:
                 //su7a3
-                Room newRoom = new Room();
+                GameObject Room = new GameObject();
+                Room.AddComponent<Room>();
+                Room newRoom = Room.GetComponent<Room>();
                 listRoom.Add(newRoom);
                 newRoom.roomID = listRoom.Count;
                 Broadcast(ConstantData.CREATE_ROOM_RESPONSE+ "|success|"+listRoom.Count, clients);

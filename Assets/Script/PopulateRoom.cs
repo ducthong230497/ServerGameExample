@@ -59,6 +59,7 @@ public class PopulateRoom : MonoBehaviour {
         {
             GameObject room = Instantiate(Room, transform);
             room.GetComponent<Room>().onRoomClicked = OnRoomClicked;
+            room.GetComponent<Room>().roomID = roomID;
             listRoom.Add(room.GetComponent<Room>());
             if(isCreateRoom)
             {
