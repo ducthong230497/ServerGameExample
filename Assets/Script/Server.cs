@@ -145,6 +145,7 @@ public class Server : MonoBehaviour {
                 temp.Clear();
                 break;
             case ConstantData.CREATE_ROOM:
+                //su7a3
                 Room newRoom = new Room();
                 listRoom.Add(newRoom);
                 newRoom.roomID = listRoom.Count;

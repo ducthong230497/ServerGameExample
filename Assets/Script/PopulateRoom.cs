@@ -10,7 +10,8 @@ public class PopulateRoom : MonoBehaviour {
     private GridLayoutGroup gridLayout;
     private Client client;
     private int amount;
-    private List<Room> listRoom;
+    private List<Room> listRoom = new List<Room>();
+    private bool isCreateRoom;
 
 	void Start () {
         client = GameObject.Find("Client(Clone)").GetComponent<Client>();
@@ -29,7 +30,10 @@ public class PopulateRoom : MonoBehaviour {
 
         foreach (var room in Server.Instance.listRoom)
         {
-            Instantiate(Room, transform);
+            GameObject r = Instantiate(Room, transform);
+            r.GetComponent<Room>().onRoomClicked = OnRoomClicked;
+            r.GetComponent<Room>().roomID = room.roomID;
+            listRoom.Add(r.GetComponent<Room>());
         }
 	}
 
@@ -46,14 +50,21 @@ public class PopulateRoom : MonoBehaviour {
     public void CreateRoom()
     {
         client.SendData(ConstantData.CREATE_ROOM);
+        isCreateRoom = true;
     }
 
     private void OnCreateRoomResponse(string msg, int roomID)
     {
         if (msg.Equals("success"))
         {
-            Instantiate(Room, transform);
-            client.SendData(ConstantData.JOIN_ROOM + "|"+client.ClientName+"|"+roomID);
+            GameObject room = Instantiate(Room, transform);
+            room.GetComponent<Room>().onRoomClicked = OnRoomClicked;
+            listRoom.Add(room.GetComponent<Room>());
+            if(isCreateRoom)
+            {
+                client.SendData(ConstantData.JOIN_ROOM + "|" + client.ClientName + "|" + roomID);
+                isCreateRoom = false;
+            }
         }
         else
             Debug.Log("Fail to create room");
@@ -63,5 +74,10 @@ public class PopulateRoom : MonoBehaviour {
     {
         yield return new WaitForSeconds(2);
         GameManager.Instance.LoadScene("WaitingRoomScene");
+    }
+
+    private void OnRoomClicked(int roomID)
+    {
+        client.SendData(ConstantData.JOIN_ROOM + "|" + client.ClientName + "|" + roomID);
     }
 }
