@@ -128,7 +128,11 @@ public class Server : MonoBehaviour {
     private void OnInCommingData(ServerClient client, string data)
     {
         Debug.Log(client.clientName + ": "+ data);
+
         string[] msg = data.Split('|');
+        int roomID;
+        Room r;
+        List<ServerClient> tempClients;
 
         switch (msg[0])
         {
@@ -155,8 +159,8 @@ public class Server : MonoBehaviour {
                 Debug.Log("Create new room success");
                 break;
             case ConstantData.JOIN_ROOM:
-                int roomID = Convert.ToInt32(msg[2]);
-                Room r = listRoom[roomID - 1];
+                roomID = Convert.ToInt32(msg[2]);
+                r = listRoom[roomID - 1];
                 ServerClient sc = null;
                 foreach (var item in clients)
                 {
@@ -179,6 +183,26 @@ public class Server : MonoBehaviour {
                 r.numberPlayer++;
                 break;
             case ConstantData.GET_ROOM_INFO:
+                roomID = Convert.ToInt32(msg[1]);
+                r = listRoom[roomID - 1];
+                tempClients = new List<ServerClient> { r.client1, r.client2 };
+                Broadcast(ConstantData.GET_ROOM_INFO_RESPONSE + "|" + r.client1.clientName + "|" + r.client2.clientName, tempClients);
+                break;
+            case ConstantData.GUEST_READY:
+                roomID = Convert.ToInt32(msg[1]);
+                r = listRoom[roomID - 1];
+                Broadcast(ConstantData.GUEST_READY, r.client1);
+                break;
+            case ConstantData.GUEST_CANCLE_READY:
+                roomID = Convert.ToInt32(msg[1]);
+                r = listRoom[roomID - 1];
+                Broadcast(ConstantData.GUEST_CANCLE_READY, r.client1);
+                break;
+            case ConstantData.START_GAME:
+                roomID = Convert.ToInt32(msg[1]);
+                r = listRoom[roomID - 1];
+                tempClients = new List<ServerClient> { r.client1, r.client2 };
+                Broadcast(ConstantData.START_GAME, tempClients);
                 break;
         }
     }

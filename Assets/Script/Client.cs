@@ -22,6 +22,9 @@ public class Client : MonoBehaviour {
     public Action<string, int> onCreateRoomResponse;
     public Action<string, int>      onJoinRoomResponse;
     public Action<string>      onPlayerJoinRoomResponse;
+    public Action<string, string>      onGetRoomInfoResponse;
+    public Action onGuestReady;
+    public Action onStartGame;
 
     private Text announceText;
     private void Awake()
@@ -80,7 +83,7 @@ public class Client : MonoBehaviour {
                 break;
             case ConstantData.ANNOUNCE_WHO_CONNECTED:
                 UserConnected(msg[1], false);
-                announceText.text = data;
+                //announceText.text = data;
                 break;
             case ConstantData.WELCOME_MESSAGE:
                 announceText.text = string.Format(msg[1], ClientName);
@@ -91,6 +94,16 @@ public class Client : MonoBehaviour {
                 break;
             case ConstantData.JOIN_ROOM_RESPONSE:
                 onJoinRoomResponse(msg[1], Convert.ToInt32(msg[2]));
+                break;
+            case ConstantData.GET_ROOM_INFO_RESPONSE:
+                onGetRoomInfoResponse(msg[1], msg[2]);
+                break;
+            case ConstantData.GUEST_READY:
+            case ConstantData.GUEST_CANCLE_READY:
+                onGuestReady();
+                break;
+            case ConstantData.START_GAME:
+                onStartGame();
                 break;
         }
     }

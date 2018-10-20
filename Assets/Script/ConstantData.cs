@@ -8,5 +8,10 @@ public class ConstantData {
     public const string CREATE_ROOM_RESPONSE = "create room response";
     public const string JOIN_ROOM = "join room";
     public const string JOIN_ROOM_RESPONSE = "join room response";
+    public const string GET_LIST_ROOM = "get list room";
     public const string GET_ROOM_INFO = "get room info";
+    public const string GET_ROOM_INFO_RESPONSE = "get room info response";
+    public const string START_GAME = "start game";
+    public const string GUEST_READY = "guest ready";
+    public const string GUEST_CANCLE_READY = "guest cancle ready";
 }

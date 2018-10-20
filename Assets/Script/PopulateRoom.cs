@@ -28,6 +28,7 @@ public class PopulateRoom : MonoBehaviour {
         float newSpacing = Mathf.FloorToInt(sizeLeftOver / (amount - 1));
         gridLayout.spacing = new Vector2(newSpacing, newSpacing);
 
+        //client.SendData(ConstantData.GET_LIST_ROOM);
         foreach (var room in Server.Instance.listRoom)
         {
             GameObject r = Instantiate(Room, transform);
