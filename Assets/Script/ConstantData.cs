@@ -8,4 +8,5 @@ public class ConstantData {
     public const string CREATE_ROOM_RESPONSE = "create room response";
     public const string JOIN_ROOM = "join room";
     public const string JOIN_ROOM_RESPONSE = "join room response";
+    public const string GET_ROOM_INFO = "get room info";
 }

@@ -37,14 +37,20 @@ public class PopulateRoom : MonoBehaviour {
         }
 	}
 
-    private void OnJoinRoomResponse(string isHost)
+    private void OnJoinRoomResponse(string isHost, int roomID)
     {
         int host = Convert.ToInt32(isHost);
-        StartCoroutine(MoveToWaitingRoom());
+        client.LastJoinRoom = roomID;
+        PlayerPrefs.SetString("clientName", client.ClientName);
         if(host == 1)
         {
-
+            PlayerPrefs.SetString("isHost", "true");
         }
+        else
+        {
+            PlayerPrefs.SetString("isHost", "false");
+        }
+        StartCoroutine(MoveToWaitingRoom());
     }
 
     public void CreateRoom()

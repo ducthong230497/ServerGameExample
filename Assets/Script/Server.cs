@@ -169,14 +169,16 @@ public class Server : MonoBehaviour {
                 if (r.numberPlayer == 0)
                 {
                     r.client1 = sc;
-                    Broadcast(ConstantData.JOIN_ROOM_RESPONSE + "|1", sc);
+                    Broadcast(ConstantData.JOIN_ROOM_RESPONSE + "|1|" + roomID, sc);
                 }
                 if(r.numberPlayer == 1)
                 {
                     r.client2 = sc;
-                    Broadcast(ConstantData.JOIN_ROOM_RESPONSE + "|0", sc);
+                    Broadcast(ConstantData.JOIN_ROOM_RESPONSE + "|0|" + roomID, sc);
                 }
                 r.numberPlayer++;
+                break;
+            case ConstantData.GET_ROOM_INFO:
                 break;
         }
     }

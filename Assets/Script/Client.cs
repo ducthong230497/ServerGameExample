@@ -14,12 +14,14 @@ public class Client : MonoBehaviour {
     private StreamWriter streamWriter;
     private StreamReader streamReader;
     public string ClientName { get; set; }
+    public int LastJoinRoom { get; set; }
 
     private List<GameClient> players = new List<GameClient>();
     private GameManager gameManager;
 
     public Action<string, int> onCreateRoomResponse;
-    public Action<string> onJoinRoomResponse;
+    public Action<string, int>      onJoinRoomResponse;
+    public Action<string>      onPlayerJoinRoomResponse;
 
     private Text announceText;
     private void Awake()
@@ -88,7 +90,7 @@ public class Client : MonoBehaviour {
                 onCreateRoomResponse(msg[1], Convert.ToInt32(msg[2]));
                 break;
             case ConstantData.JOIN_ROOM_RESPONSE:
-                onJoinRoomResponse(msg[1]);
+                onJoinRoomResponse(msg[1], Convert.ToInt32(msg[2]));
                 break;
         }
     }
