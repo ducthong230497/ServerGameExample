@@ -10,7 +10,7 @@ public class PopulateRoom : MonoBehaviour {
     private GridLayoutGroup gridLayout;
     private Client client;
     private int amount;
-    private List<Room> listRoom = new List<Room>();
+    private List<RoomMono> listRoom = new List<RoomMono>();
     private bool isCreateRoom;
 
 	void Start () {
@@ -29,12 +29,12 @@ public class PopulateRoom : MonoBehaviour {
         gridLayout.spacing = new Vector2(newSpacing, newSpacing);
 
         //client.SendData(ConstantData.GET_LIST_ROOM);
-        foreach (var room in Server.Instance.listRoom)
+        foreach (var roomMono in Server.Instance.listRoom)
         {
             GameObject r = Instantiate(Room, transform);
-            r.GetComponent<Room>().onRoomClicked = OnRoomClicked;
-            r.GetComponent<Room>().roomID = room.roomID;
-            listRoom.Add(r.GetComponent<Room>());
+            r.GetComponent<RoomMono>().room.onRoomClicked = OnRoomClicked;
+            r.GetComponent<RoomMono>().room.roomID = roomMono.room.roomID;
+            listRoom.Add(r.GetComponent<RoomMono>());
         }
 	}
 
@@ -65,9 +65,9 @@ public class PopulateRoom : MonoBehaviour {
         if (msg.Equals("success"))
         {
             GameObject room = Instantiate(Room, transform);
-            room.GetComponent<Room>().onRoomClicked = OnRoomClicked;
-            room.GetComponent<Room>().roomID = roomID;
-            listRoom.Add(room.GetComponent<Room>());
+            room.GetComponent<RoomMono>().room.onRoomClicked = OnRoomClicked;
+            room.GetComponent<RoomMono>().room.roomID = roomID;
+            listRoom.Add(room.GetComponent<RoomMono>());
             if(isCreateRoom)
             {
                 client.SendData(ConstantData.JOIN_ROOM + "|" + client.ClientName + "|" + roomID);

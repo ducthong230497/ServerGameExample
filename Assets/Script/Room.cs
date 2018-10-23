@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 
-public class Room : MonoBehaviour {
+[Serializable]
+public class Room : ISerializable
+{
     public int roomID { get; set; }
     public int numberPlayer;
     public ServerClient client1;
     public ServerClient client2;
     public Action<int> onRoomClicked;
-    
-    public void OnRoomClicked()
+
+    public void GetObjectData(SerializationInfo info, StreamingContext context)
     {
-        onRoomClicked.Invoke(roomID);
+        info.AddValue("roomID", roomID, typeof(int));
     }
 }

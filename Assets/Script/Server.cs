@@ -18,7 +18,7 @@ public class Server : MonoBehaviour {
     private TcpListener server;
     private bool isServerStarted;
 
-    public List<Room> listRoom;
+    public List<RoomMono> listRoom;
 
     private void Awake()
     {
@@ -32,7 +32,7 @@ public class Server : MonoBehaviour {
         clients = new List<ServerClient>();
         disconnectClients = new List<ServerClient>();
 
-        listRoom = new List<Room>();
+        listRoom = new List<RoomMono>();
         try
         {
             server = new TcpListener(IPAddress.Any ,port);
@@ -131,7 +131,7 @@ public class Server : MonoBehaviour {
 
         string[] msg = data.Split('|');
         int roomID;
-        Room r;
+        RoomMono r;
         List<ServerClient> tempClients;
 
         switch (msg[0])
@@ -151,10 +151,10 @@ public class Server : MonoBehaviour {
             case ConstantData.CREATE_ROOM:
                 //su7a3
                 GameObject Room = new GameObject();
-                Room.AddComponent<Room>();
-                Room newRoom = Room.GetComponent<Room>();
+                Room.AddComponent<RoomMono>();
+                RoomMono newRoom = Room.GetComponent<RoomMono>();
                 listRoom.Add(newRoom);
-                newRoom.roomID = listRoom.Count;
+                newRoom.room.roomID = listRoom.Count;
                 Broadcast(ConstantData.CREATE_ROOM_RESPONSE+ "|success|"+listRoom.Count, clients);
                 Debug.Log("Create new room success");
                 break;
@@ -170,38 +170,43 @@ public class Server : MonoBehaviour {
                         break;
                     }
                 }
-                if (r.numberPlayer == 0)
+                if (r.room.numberPlayer == 0)
                 {
-                    r.client1 = sc;
+                    r.room.client1 = sc;
                     Broadcast(ConstantData.JOIN_ROOM_RESPONSE + "|1|" + roomID, sc);
+                    r.room.numberPlayer++;
                 }
-                if(r.numberPlayer == 1)
+                else if(r.room.numberPlayer == 1)
                 {
-                    r.client2 = sc;
+                    r.room.client2 = sc;
                     Broadcast(ConstantData.JOIN_ROOM_RESPONSE + "|0|" + roomID, sc);
+                    r.room.numberPlayer++;
                 }
-                r.numberPlayer++;
+                else if(r.room.numberPlayer == 2)
+                {
+                    Debug.Log("Room is full");
+                }
                 break;
             case ConstantData.GET_ROOM_INFO:
                 roomID = Convert.ToInt32(msg[1]);
                 r = listRoom[roomID - 1];
-                tempClients = new List<ServerClient> { r.client1, r.client2 };
-                Broadcast(ConstantData.GET_ROOM_INFO_RESPONSE + "|" + r.client1.clientName + "|" + r.client2.clientName, tempClients);
+                tempClients = new List<ServerClient> { r.room.client1, r.room.client2 };
+                Broadcast(ConstantData.GET_ROOM_INFO_RESPONSE + "|" + r.room.client1.clientName + "|" + r.room.client2.clientName, tempClients);
                 break;
             case ConstantData.GUEST_READY:
                 roomID = Convert.ToInt32(msg[1]);
                 r = listRoom[roomID - 1];
-                Broadcast(ConstantData.GUEST_READY, r.client1);
+                Broadcast(ConstantData.GUEST_READY, r.room.client1);
                 break;
             case ConstantData.GUEST_CANCLE_READY:
                 roomID = Convert.ToInt32(msg[1]);
                 r = listRoom[roomID - 1];
-                Broadcast(ConstantData.GUEST_CANCLE_READY, r.client1);
+                Broadcast(ConstantData.GUEST_CANCLE_READY, r.room.client1);
                 break;
             case ConstantData.START_GAME:
                 roomID = Convert.ToInt32(msg[1]);
                 r = listRoom[roomID - 1];
-                tempClients = new List<ServerClient> { r.client1, r.client2 };
+                tempClients = new List<ServerClient> { r.room.client1, r.room.client2 };
                 Broadcast(ConstantData.START_GAME, tempClients);
                 break;
         }

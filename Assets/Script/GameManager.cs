@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -78,6 +80,31 @@ public class GameManager : MonoBehaviour {
             //Client client = Instantiate(clientPref).GetComponent<Client>();
             //client.ClientName = string.IsNullOrEmpty(name.text) ? "client" : name.text;
             //client.ConnectToServer(hostAddress, port);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+        }
+
+        try
+        {
+            Room r = new Room { roomID = 1997 };
+            
+            MemoryStream memoryStream = new MemoryStream();
+
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+            binaryFormatter.Serialize(memoryStream, r);
+
+            byte[] buffer = memoryStream.ToArray();
+
+            byte[] clientData = new byte[256];
+
+            BinaryFormatter formattor = new BinaryFormatter();
+            MemoryStream ms = new MemoryStream(clientData);
+            Room objFileInfo = (Room)formattor.Deserialize(ms);
+
+            int a = 2;
         }
         catch (Exception e)
         {
