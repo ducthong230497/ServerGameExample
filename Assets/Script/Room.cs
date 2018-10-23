@@ -17,4 +17,14 @@ public class Room : ISerializable
     {
         info.AddValue("roomID", roomID, typeof(int));
     }
+
+    public Room(SerializationInfo info, StreamingContext context)
+    {
+        roomID = info.GetInt32("roomID");
+    }
+
+    public Room()
+    {
+
+    }
 }

@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour {
         try
         {
             Room r = new Room { roomID = 1997 };
-            
+
             MemoryStream memoryStream = new MemoryStream();
 
             BinaryFormatter binaryFormatter = new BinaryFormatter();
@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour {
             byte[] clientData = new byte[256];
 
             BinaryFormatter formattor = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream(clientData);
+            MemoryStream ms = new MemoryStream(buffer);
             Room objFileInfo = (Room)formattor.Deserialize(ms);
 
             int a = 2;

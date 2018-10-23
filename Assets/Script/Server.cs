@@ -154,6 +154,7 @@ public class Server : MonoBehaviour {
                 Room.AddComponent<RoomMono>();
                 RoomMono newRoom = Room.GetComponent<RoomMono>();
                 listRoom.Add(newRoom);
+                newRoom.room = new Room();
                 newRoom.room.roomID = listRoom.Count;
                 Broadcast(ConstantData.CREATE_ROOM_RESPONSE+ "|success|"+listRoom.Count, clients);
                 Debug.Log("Create new room success");
