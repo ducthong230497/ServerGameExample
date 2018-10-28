@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: CarAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 94d0bcbd44280c6459cb9476daf252d4, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 8ab82f001e6d4f2499e2c934f7e2faee, type: 3}
+  - {fileID: 21300000, guid: 3999ab1051be44a4a9fc3e205ac0dd60, type: 3}
+  - {fileID: 21300000, guid: 4d578c704b29cbd40a6e719acecc0ea0, type: 3}
+  - {fileID: 21300000, guid: 1c361fa028303004f88279c0e5dcc9b9, type: 3}
+  - {fileID: 21300000, guid: 61c8fb91df5c7c847845e3fb2ef53a0c, type: 3}
+  - {fileID: 21300000, guid: 835d0b126fc0efd49b99e6ce3cff669d, type: 3}
+  - {fileID: 21300000, guid: 4abae0b2b73403846969212442a3cb71, type: 3}
+  - {fileID: 21300000, guid: 78fd7c239e502e54eb91f1936fb8e205, type: 3}
+  - {fileID: 21300000, guid: e1616073cf9f33b4c9b6fa30285cd2b1, type: 3}
+  - {fileID: 21300000, guid: 4e8264c370ef83746b6345b876cb3ae2, type: 3}
+  - {fileID: 21300000, guid: 13a561e33ab0c41428f7e0b291641b28, type: 3}
+  - {fileID: 21300000, guid: 8e86ff34b28f09343a597879a9a7c07d, type: 3}
+  - {fileID: 21300000, guid: 118a6a440ed279a458f3ae9d156a758a, type: 3}
+  - {fileID: 21300000, guid: bc9d1bd46193131468187832c842caad, type: 3}
+  - {fileID: 21300000, guid: 8c4c7d454e198a34cbf551f07fa86059, type: 3}
+  - {fileID: 21300000, guid: f5c11275c50af9640a6fcf1c20f75ede, type: 3}
+  - {fileID: 21300000, guid: ca0ed5c5592377c48818bc883108022f, type: 3}
+  - {fileID: 21300000, guid: 802df8062cccff442bf7ea9c26226de3, type: 3}
+  - {fileID: 21300000, guid: 65198946d21eabd488b23f81e22c9c0e, type: 3}
+  - {fileID: 21300000, guid: 7b307d66f94f41641955b2a9da54df3e, type: 3}
+  - {fileID: 21300000, guid: f7988276a226aa7489b97b2f840fccbc, type: 3}
+  - {fileID: 21300000, guid: 3701b3f62f8988348ae573a8f74e6f3d, type: 3}
+  - {fileID: 21300000, guid: 56c82127c97347a43b1999ec256f81d2, type: 3}
+  - {fileID: 21300000, guid: fc670527c8c72dd4298b752cb8b86087, type: 3}
+  - {fileID: 21300000, guid: 3417b25788e0c5b428be7e1700e73ff6, type: 3}
+  - {fileID: 21300000, guid: 91fe15c73181ea94b8ccc3dbbd6faa08, type: 3}
+  - {fileID: 21300000, guid: 78e63ad7a247c8e4584d75e713430914, type: 3}
+  - {fileID: 21300000, guid: 87c35518fed32f34d93cd5703b704568, type: 3}
+  - {fileID: 21300000, guid: 7c55bf38add0d4f4cbbecf4267548098, type: 3}
+  - {fileID: 21300000, guid: 2429df38b9687ef46abd0cd4b0695537, type: 3}
+  - {fileID: 21300000, guid: b76349c9993e77543b3d05794634e32a, type: 3}
+  - {fileID: 21300000, guid: d000bb7a3d2203e438b8d9e35309944b, type: 3}
+  - {fileID: 21300000, guid: e034906bf70e7ae4591b5ca5e7ccd63e, type: 3}
+  - {fileID: 21300000, guid: e155f6ab7a5dc5e4ba95bd8d93155991, type: 3}
+  - {fileID: 21300000, guid: 03acd1cba582855449a5d540a211d07e, type: 3}
+  - {fileID: 21300000, guid: 52c50bfb8c9c1984b8da127aa4c41a92, type: 3}
+  - {fileID: 21300000, guid: f00e135cfdb54364a81ab9cf938d91bd, type: 3}
+  - {fileID: 21300000, guid: f612cc7c8ba9d5b4d83fd9f437d35b30, type: 3}
+  - {fileID: 21300000, guid: 258f028c16796b442975eacd98444cf0, type: 3}
+  - {fileID: 21300000, guid: 61e4eaac33f820c4d8e578621c663404, type: 3}
+  - {fileID: 21300000, guid: 8507934d359a7db4a93eaa10e649d6b3, type: 3}
+  - {fileID: 21300000, guid: 62f04d4d1950b464688343bf8eae50d6, type: 3}
+  - {fileID: 21300000, guid: ad97706d91bf9b4418e8f922311a6f0f, type: 3}
+  - {fileID: 21300000, guid: 86c3933e225d0494f933435c9e7cd841, type: 3}
+  - {fileID: 21300000, guid: a460ff4e47b6ca0429135082d8d780da, type: 3}
+  - {fileID: 21300000, guid: b116cf7ee3d42c54cacb1a2f550f1634, type: 3}
+  - {fileID: 21300000, guid: 5881fcaeab36bfd489a8da0590db5f47, type: 3}
+  - {fileID: 21300000, guid: 98cadaee3df02134b832d9f8a650d685, type: 3}
+  - {fileID: 21300000, guid: c6311ddffcb2ff84b933c28ebee538d8, type: 3}
+  - {fileID: 21300000, guid: 4a13d7ef0c8362847b0bfa53c626a699, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - car_black_2
+  - car_green_3
+  - car_blue_small_1
+  - car_black_small_3
+  - car_red_small_3
+  - car_black_small_4
+  - car_green_5
+  - car_red_5
+  - car_yellow_2
+  - car_yellow_3
+  - car_blue_small_4
+  - car_red_small_4
+  - car_yellow_small_3
+  - car_black_small_5
+  - car_blue_small_2
+  - car_black_3
+  - car_green_small_5
+  - car_yellow_small_2
+  - car_yellow_1
+  - car_green_4
+  - car_yellow_5
+  - car_blue_3
+  - car_red_1
+  - car_black_1
+  - car_green_small_4
+  - car_red_small_5
+  - car_black_small_1
+  - car_red_4
+  - car_yellow_small_1
+  - car_blue_small_5
+  - car_green_small_3
+  - car_green_small_1
+  - car_red_2
+  - car_black_4
+  - car_green_1
+  - car_blue_small_3
+  - car_blue_5
+  - car_yellow_small_5
+  - car_blue_1
+  - car_red_3
+  - car_yellow_4
+  - car_black_5
+  - car_blue_4
+  - car_green_small_2
+  - car_red_small_2
+  - car_black_small_2
+  - car_red_small_1
+  - car_green_2
+  - car_yellow_small_4
+  - car_blue_2
+  m_Tag: CarAtlas
+  m_IsVariant: 0
