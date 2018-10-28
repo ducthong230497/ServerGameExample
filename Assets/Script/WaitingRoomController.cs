@@ -44,7 +44,10 @@ public class WaitingRoomController : MonoBehaviour {
             else
             {
                 TMPro_client2.text = PlayerPrefs.GetString("clientName");
-                client.SendData(ConstantData.GET_ROOM_INFO + "|" + client.LastJoinRoom);
+                ServerObject so = new ServerObject();
+                so.PutString("cmd", ConstantData.GET_ROOM_INFO);
+                so.PutInt("roomID", client.LastJoinRoom);
+                client.SendData(so);
                 startReadyText.text = ready;
                 btnReadyStart.interactable = true;
                 btnReadyStart.onClick.AddListener(OnReadyClicked);
@@ -79,21 +82,30 @@ public class WaitingRoomController : MonoBehaviour {
 
     public void OnStartClicked()
     {
-        client.SendData(ConstantData.START_GAME + "|" + client.LastJoinRoom);
+        ServerObject so = new ServerObject();
+        so.PutString("cmd", ConstantData.START_GAME);
+        so.PutInt("roomID", client.LastJoinRoom);
+        client.SendData(so);
     }
 	
 	public void OnReadyClicked()
     {
         if (!isReady)
         {
-            client.SendData(ConstantData.GUEST_READY + "|" + client.LastJoinRoom);
+            ServerObject so = new ServerObject();
+            so.PutString("cmd", ConstantData.GUEST_READY);
+            so.PutInt("roomID", client.LastJoinRoom);
+            client.SendData(so);
             startReadyText.text = cancle;
             isReady = true;
             ReadyText.text = ready;
         }
         else
         {
-            client.SendData(ConstantData.GUEST_CANCLE_READY + "|" + client.LastJoinRoom);
+            ServerObject so = new ServerObject();
+            so.PutString("cmd", ConstantData.GUEST_CANCLE_READY);
+            so.PutInt("roomID", client.LastJoinRoom);
+            client.SendData(so);
             startReadyText.text = ready;
             isReady = false;
             ReadyText.text = string.Empty;

@@ -142,6 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TMPro_client1: {fileID: 1422382797}
   TMPro_client2: {fileID: 1310189737}
+  ReadyText: {fileID: 353865512}
   btnReadyStart: {fileID: 1859181482}
 --- !u!4 &261542791
 Transform:

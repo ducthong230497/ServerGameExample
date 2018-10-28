@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using UnityEngine;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class Server : MonoBehaviour {
     public static Server Instance { get; set; }
@@ -64,10 +65,10 @@ public class Server : MonoBehaviour {
 
     private void AcceptTcpClient(IAsyncResult asyncResult)
     {
-        string allUser = "";
+        List<string> allUsers = new List<string>();
         foreach (var sc in clients)
         {
-            allUser += sc.clientName + '|';
+            allUsers.Add(sc.clientName);
         }
 
         TcpListener listener = (TcpListener)asyncResult.AsyncState;
@@ -78,7 +79,14 @@ public class Server : MonoBehaviour {
 
         StartListening();
 
-        Broadcast(ConstantData.WHO_CONNECTED+'|' + allUser, client);
+        //Broadcast(ConstantData.WHO_CONNECTED+'|' + allUser, client);
+
+        ServerObject so = new ServerObject { err_code = 0, err_msg = "adsl" };
+        so.PutString("cmd", ConstantData.WHO_CONNECTED);
+        so.PutList<string>("usersName", allUsers);
+        
+
+        Broadcast(so, client);
 
         Debug.Log("Somebody has connected!");
     }
@@ -119,10 +127,43 @@ public class Server : MonoBehaviour {
         }
     }
 
+    private void Broadcast(ServerObject so, List<ServerClient> clients)
+    {
+        MemoryStream memoryStream = new MemoryStream();
+
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+        binaryFormatter.Serialize(memoryStream, so);
+
+        byte[] data = memoryStream.ToArray();
+
+        foreach (var sc in clients)
+        {
+            try
+            {
+                //StreamWriter streamWriter = new StreamWriter(sc.tcp.GetStream());
+                //streamWriter.WriteLine(data);
+                //streamWriter.Flush();
+                sc.tcp.GetStream().Write(data, 0, data.Length);
+                sc.tcp.GetStream().Flush();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
+        }
+    }
+
     private void Broadcast(string data, ServerClient client)
     {
         List<ServerClient> clients = new List<ServerClient> { client };
         Broadcast(data, clients);
+    }
+
+    private void Broadcast(ServerObject so, ServerClient client)
+    {
+        List<ServerClient> clients = new List<ServerClient> { client };
+        Broadcast(so, clients);
     }
 
     private void OnInCommingData(ServerClient client, string data)
@@ -136,7 +177,7 @@ public class Server : MonoBehaviour {
 
         switch (msg[0])
         {
-            case ConstantData.WHO_CONNECTED_RESPONSE:
+            case ConstantData.WHO_CONNECTED:
                 client.clientName = msg[1];
                 int index = clients.Count;
                 List<ServerClient> temp = new List<ServerClient>();
@@ -213,6 +254,120 @@ public class Server : MonoBehaviour {
         }
     }
 
+    private void OnInCommingData(ServerClient client, ServerObject so)
+    {
+        ServerObject serverObject = new ServerObject();
+
+        Debug.Log(so);
+        string cmd = so.GetString("cmd");
+
+
+        string[] msg = null;
+        int roomID;
+        RoomMono r;
+        List<ServerClient> tempClients;
+
+        switch (cmd)
+        {
+            case ConstantData.WHO_CONNECTED:
+                client.clientName = so.GetString("clientName");
+                int index = clients.Count;
+                List<ServerClient> temp = new List<ServerClient>();
+                for (int i = 0; i < index - 1; i++)
+                {
+                    temp.Add(clients[i]);
+                }
+                serverObject.PutString("cmd", ConstantData.ANNOUNCE_WHO_CONNECTED);
+                serverObject.PutString("clientName", client.clientName);
+                Broadcast(serverObject, temp);
+                serverObject = new ServerObject();
+                serverObject.PutString("cmd", ConstantData.WELCOME_MESSAGE);
+                serverObject.PutString("welcomemsg", "welcome {0}");
+                Broadcast(serverObject, clients[index - 1]);
+                temp.Clear();
+                break;
+            case ConstantData.CREATE_ROOM:
+                //su7a3
+                GameObject Room = new GameObject();
+                Room.AddComponent<RoomMono>();
+                RoomMono newRoom = Room.GetComponent<RoomMono>();
+                listRoom.Add(newRoom);
+                newRoom.room = new Room();
+                newRoom.room.roomID = listRoom.Count;
+
+                serverObject.PutString("cmd", ConstantData.CREATE_ROOM);
+                serverObject.PutString("msg", "success");
+                serverObject.PutInt("roomID", listRoom.Count);
+                Broadcast(serverObject, clients);
+                Debug.Log("Create new room success");
+                break;
+            case ConstantData.JOIN_ROOM:
+                roomID = so.GetInt("roomID");
+                r = listRoom[roomID - 1];
+                ServerClient sc = null;
+                foreach (var item in clients)
+                {
+                    if (item.clientName == so.GetString("clientName"))
+                    {
+                        sc = item;
+                        break;
+                    }
+                }
+                if (r.room.numberPlayer == 0)
+                {
+                    r.room.client1 = sc;
+                    serverObject.PutString("cmd", ConstantData.JOIN_ROOM);
+                    serverObject.PutString("isHost", "1");
+                    serverObject.PutInt("roomID", roomID);
+                    Broadcast(serverObject, sc);
+                    r.room.numberPlayer++;
+                }
+                else if (r.room.numberPlayer == 1)
+                {
+                    r.room.client2 = sc;
+                    serverObject.PutString("cmd", ConstantData.JOIN_ROOM);
+                    serverObject.PutString("isHost", "0");
+                    serverObject.PutInt("roomID", roomID);
+                    Broadcast(serverObject, sc);
+                    r.room.numberPlayer++;
+                }
+                else if (r.room.numberPlayer == 2)
+                {
+                    Debug.Log("Room is full");
+                }
+                break;
+            case ConstantData.GET_ROOM_INFO:
+                roomID = so.GetInt("roomID");
+                r = listRoom[roomID - 1];
+                tempClients = new List<ServerClient> { r.room.client1, r.room.client2 };
+
+                serverObject.PutString("cmd", ConstantData.GET_ROOM_INFO);
+                serverObject.PutString("client1", r.room.client1.clientName);
+                serverObject.PutString("client2", r.room.client2.clientName);
+                Broadcast(serverObject, tempClients);
+                break;
+            case ConstantData.GUEST_READY:
+                roomID = so.GetInt("roomID");
+                r = listRoom[roomID - 1];
+                serverObject.PutString("cmd", ConstantData.GUEST_READY);
+                Broadcast(serverObject, r.room.client1);
+                break;
+            case ConstantData.GUEST_CANCLE_READY:
+                roomID = so.GetInt("roomID");
+                r = listRoom[roomID - 1];
+                serverObject.PutString("cmd", ConstantData.GUEST_CANCLE_READY);
+                Broadcast(serverObject, r.room.client1);
+                break;
+            case ConstantData.START_GAME:
+                roomID = so.GetInt("roomID");
+                r = listRoom[roomID - 1];
+                tempClients = new List<ServerClient> { r.room.client1, r.room.client2 };
+                serverObject.PutString("cmd", ConstantData.START_GAME);
+                Broadcast(serverObject, tempClients);
+                break;
+        }
+    }
+
     private void Update()
     {
         if (!isServerStarted) return;
@@ -231,13 +386,34 @@ public class Server : MonoBehaviour {
                 NetworkStream networkStream = client.tcp.GetStream();
                 if (networkStream.DataAvailable)
                 {
-                    StreamReader streamReader = new StreamReader(networkStream, true);
-                    string data = streamReader.ReadLine();
+                    byte[] readBuffer = new byte[client.tcp.ReceiveBufferSize];
+                    byte[] temp = null;
 
-                    if (!String.IsNullOrEmpty(data))
+                    int numberOfBytesRead = networkStream.Read(readBuffer, 0, readBuffer.Length);
+                    if (numberOfBytesRead <= 0)
                     {
-                        OnInCommingData(client, data);
+                        return;
                     }
+                    temp = new byte[numberOfBytesRead];
+
+                    Array.Copy(readBuffer, 0, temp, 0, numberOfBytesRead);
+
+                    using (MemoryStream ms = new MemoryStream(temp))
+                    {
+                        //fullServerReply = Encoding.UTF8.GetString(writer.ToArray());
+                        BinaryFormatter binaryFormatter = new BinaryFormatter();
+                        ServerObject so = (ServerObject)binaryFormatter.Deserialize(ms);
+                        int a = 2;
+                        OnInCommingData(client, so);
+                    }
+
+                    //StreamReader streamReader = new StreamReader(networkStream, true);
+                    //string data = streamReader.ReadLine();
+
+                    //if (!String.IsNullOrEmpty(data))
+                    //{
+                    //    OnInCommingData(client, data);
+                    //}
                 }
             }
         }

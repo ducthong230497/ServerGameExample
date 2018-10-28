@@ -56,7 +56,9 @@ public class PopulateRoom : MonoBehaviour {
 
     public void CreateRoom()
     {
-        client.SendData(ConstantData.CREATE_ROOM);
+        ServerObject so = new ServerObject();
+        so.PutString("cmd", ConstantData.CREATE_ROOM);
+        client.SendData(so);
         isCreateRoom = true;
     }
 
@@ -70,7 +72,11 @@ public class PopulateRoom : MonoBehaviour {
             listRoom.Add(room.GetComponent<RoomMono>());
             if(isCreateRoom)
             {
-                client.SendData(ConstantData.JOIN_ROOM + "|" + client.ClientName + "|" + roomID);
+                ServerObject so = new ServerObject();
+                so.PutString("cmd", ConstantData.JOIN_ROOM);
+                so.PutString("clientName", client.ClientName);
+                so.PutInt("roomID", roomID);
+                client.SendData(so);
                 isCreateRoom = false;
             }
         }
@@ -86,6 +92,10 @@ public class PopulateRoom : MonoBehaviour {
 
     private void OnRoomClicked(int roomID)
     {
-        client.SendData(ConstantData.JOIN_ROOM + "|" + client.ClientName + "|" + roomID);
+        ServerObject so = new ServerObject();
+        so.PutString("cmd", ConstantData.JOIN_ROOM);
+        so.PutString("clientName", client.ClientName);
+        so.PutInt("roomID", roomID);
+        client.SendData(so);
     }
 }

@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Client : MonoBehaviour {
+public class Client : MonoBehaviour
+{
 
     private bool isSocketReady;
     private TcpClient socket;
@@ -20,9 +23,9 @@ public class Client : MonoBehaviour {
     private GameManager gameManager;
 
     public Action<string, int> onCreateRoomResponse;
-    public Action<string, int>      onJoinRoomResponse;
-    public Action<string>      onPlayerJoinRoomResponse;
-    public Action<string, string>      onGetRoomInfoResponse;
+    public Action<string, int> onJoinRoomResponse;
+    public Action<string> onPlayerJoinRoomResponse;
+    public Action<string, string> onGetRoomInfoResponse;
     public Action onGuestReady;
     public Action onStartGame;
 
@@ -67,19 +70,32 @@ public class Client : MonoBehaviour {
         streamWriter.Flush();
     }
 
+    public void SendData(ServerObject so)
+    {
+        if (!isSocketReady) return;
+
+        MemoryStream ms = new MemoryStream();
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+        binaryFormatter.Serialize(ms, so);
+
+        byte[] buffer = ms.ToArray();
+
+        networkStream.Write(buffer, 0, buffer.Length);
+    }
+
     private void OnInComingData(string data)
     {
         Debug.Log(data);
         string[] msg = data.Split('|');
 
-        switch(msg[0])
+        switch (msg[0])
         {
             case ConstantData.WHO_CONNECTED:
                 for (int i = 1; i < msg.Length - 1; i++)
                 {
                     UserConnected(msg[i], false);
                 }
-                SendData(ConstantData.WHO_CONNECTED_RESPONSE+'|'+ClientName);
+                SendData(ConstantData.WHO_CONNECTED_RESPONSE + '|' + ClientName);
                 break;
             case ConstantData.ANNOUNCE_WHO_CONNECTED:
                 UserConnected(msg[1], false);
@@ -108,18 +124,86 @@ public class Client : MonoBehaviour {
         }
     }
 
+    private void OnInComingData(ServerObject so)
+    {
+        ServerObject serverObject = new ServerObject();
+
+        Debug.Log(so);
+        string cmd = so.GetString("cmd");
+        string[] msg = null;
+
+        switch (cmd)
+        {
+            case ConstantData.WHO_CONNECTED:
+                List<string> userName = so.GetList<string>("usersName");
+                for (int i = 1; i < userName.Count - 1; i++)
+                {
+                    UserConnected(userName[i], false);
+                }
+                serverObject.PutString("cmd", ConstantData.WHO_CONNECTED);
+                serverObject.PutString("clientName", ClientName);
+                SendData(serverObject);
+                break;
+            case ConstantData.ANNOUNCE_WHO_CONNECTED:
+                UserConnected(so.GetString("clientName"), false);
+                //announceText.text = data;
+                break;
+            case ConstantData.WELCOME_MESSAGE:
+                announceText.text = string.Format(so.GetString("welcomemsg"), ClientName);
+                StartCoroutine(MoveToLobby());
+                break;
+            case ConstantData.CREATE_ROOM:
+                onCreateRoomResponse(so.GetString("msg"), so.GetInt("roomID"));
+                break;
+            case ConstantData.JOIN_ROOM:
+                onJoinRoomResponse(so.GetString("isHost"), so.GetInt("roomID"));
+                break;
+            case ConstantData.GET_ROOM_INFO:
+                onGetRoomInfoResponse(so.GetString("client1"), so.GetString("client2"));
+                break;
+            case ConstantData.GUEST_READY:
+            case ConstantData.GUEST_CANCLE_READY:
+                onGuestReady();
+                break;
+            case ConstantData.START_GAME:
+                onStartGame();
+                break;
+        }
+    }
+
     private void Update()
     {
         if (isSocketReady)
         {
             if (networkStream.DataAvailable)
             {
-                string data = streamReader.ReadLine();
+                //string data = streamReader.ReadLine();
 
-                if(!string.IsNullOrEmpty(data))
+                byte[] readBuffer = new byte[socket.ReceiveBufferSize];
+                byte[] temp = null;
+
+                int numberOfBytesRead = networkStream.Read(readBuffer, 0, readBuffer.Length);
+                if (numberOfBytesRead <= 0)
                 {
-                    OnInComingData(data);
+                    return;
                 }
+                temp = new byte[numberOfBytesRead];
+
+                Array.Copy(readBuffer, 0, temp, 0, numberOfBytesRead);
+
+                using (MemoryStream ms = new MemoryStream(temp))
+                {
+                    //fullServerReply = Encoding.UTF8.GetString(writer.ToArray());
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    ServerObject so = (ServerObject)binaryFormatter.Deserialize(ms);
+                    int a = 2;
+                    OnInComingData(so);
+                }
+
+                //if (!string.IsNullOrEmpty(data))
+                //{
+                //    OnInComingData(data);
+                //}
             }
         }
     }
@@ -137,7 +221,7 @@ public class Client : MonoBehaviour {
         player.isHost = host;
         players.Add(player);
 
-        
+
     }
 
     private void CloseSocket()
