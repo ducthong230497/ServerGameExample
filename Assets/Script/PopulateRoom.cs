@@ -17,6 +17,7 @@ public class PopulateRoom : MonoBehaviour {
         client = GameObject.Find("Client(Clone)").GetComponent<Client>();
         client.onCreateRoomResponse += OnCreateRoomResponse;
         client.onJoinRoomResponse += OnJoinRoomResponse;
+        client.onGetListRoom += OnGetListRoom;
 
         gridLayout = GetComponent<GridLayoutGroup>();
 
@@ -28,14 +29,9 @@ public class PopulateRoom : MonoBehaviour {
         float newSpacing = Mathf.FloorToInt(sizeLeftOver / (amount - 1));
         gridLayout.spacing = new Vector2(newSpacing, newSpacing);
 
-        //client.SendData(ConstantData.GET_LIST_ROOM);
-        foreach (var roomMono in Server.Instance.listRoom)
-        {
-            GameObject r = Instantiate(Room, transform);
-            r.GetComponent<RoomMono>().room.onRoomClicked = OnRoomClicked;
-            r.GetComponent<RoomMono>().room.roomID = roomMono.room.roomID;
-            listRoom.Add(r.GetComponent<RoomMono>());
-        }
+        ServerObject so = new ServerObject();
+        so.PutString("cmd", ConstantData.GET_LIST_ROOM);
+        client.SendData(so);
 	}
 
     private void OnJoinRoomResponse(string isHost, int roomID)
@@ -97,5 +93,19 @@ public class PopulateRoom : MonoBehaviour {
         so.PutString("clientName", client.ClientName);
         so.PutInt("roomID", roomID);
         client.SendData(so);
+    }
+
+    private void OnGetListRoom(List<RoomMono> listRoom)
+    {
+        foreach (var roomMono in listRoom)
+        {
+            GameObject r = Instantiate(Room, transform);
+            r.GetComponent<RoomMono>().room = new Room();
+            r.GetComponent<RoomMono>().room.onRoomClicked = OnRoomClicked;
+            r.GetComponent<RoomMono>().room.roomID = roomMono.room.roomID;
+            r.GetComponent<RoomMono>().room.client1 = roomMono.room.client1;
+            r.GetComponent<RoomMono>().room.client2 = roomMono.room.client2;
+            this.listRoom.Add(r.GetComponent<RoomMono>());
+        }
     }
 }

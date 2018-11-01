@@ -14,4 +14,5 @@ public class ConstantData {
     public const string START_GAME = "start game";
     public const string GUEST_READY = "guest ready";
     public const string GUEST_CANCLE_READY = "guest cancle ready";
+    public const string UPDATE_PLAYER_ROTATION = "update player rotation";
 }

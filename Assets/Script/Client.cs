@@ -26,8 +26,10 @@ public class Client : MonoBehaviour
     public Action<string, int> onJoinRoomResponse;
     public Action<string> onPlayerJoinRoomResponse;
     public Action<string, string> onGetRoomInfoResponse;
+    public Action<List<RoomMono>> onGetListRoom;
     public Action onGuestReady;
     public Action onStartGame;
+    public Action<float, float, float> onUpdateOponentRoation;
 
     private Text announceText;
     private void Awake()
@@ -158,6 +160,9 @@ public class Client : MonoBehaviour
             case ConstantData.JOIN_ROOM:
                 onJoinRoomResponse(so.GetString("isHost"), so.GetInt("roomID"));
                 break;
+            case ConstantData.GET_LIST_ROOM:
+                onGetListRoom(so.GetList<RoomMono>("listRoom"));
+                break;
             case ConstantData.GET_ROOM_INFO:
                 onGetRoomInfoResponse(so.GetString("client1"), so.GetString("client2"));
                 break;
@@ -167,6 +172,9 @@ public class Client : MonoBehaviour
                 break;
             case ConstantData.START_GAME:
                 onStartGame();
+                break;
+            case ConstantData.UPDATE_PLAYER_ROTATION:
+                onUpdateOponentRoation(so.GetFloat("x"), so.GetFloat("y"), so.GetFloat("z"));
                 break;
         }
     }

@@ -336,6 +336,11 @@ public class Server : MonoBehaviour {
                     Debug.Log("Room is full");
                 }
                 break;
+            case ConstantData.GET_LIST_ROOM:
+                serverObject.PutString("cmd", ConstantData.GET_LIST_ROOM);
+                serverObject.PutList<RoomMono>("listRoom", listRoom);
+                Broadcast(serverObject, client);
+                break;
             case ConstantData.GET_ROOM_INFO:
                 roomID = so.GetInt("roomID");
                 r = listRoom[roomID - 1];
@@ -364,6 +369,18 @@ public class Server : MonoBehaviour {
                 tempClients = new List<ServerClient> { r.room.client1, r.room.client2 };
                 serverObject.PutString("cmd", ConstantData.START_GAME);
                 Broadcast(serverObject, tempClients);
+                break;
+            case ConstantData.UPDATE_PLAYER_ROTATION:
+                roomID = so.GetInt("roomID");
+                r = listRoom[roomID - 1];
+                if (r.room.client1.clientName == client.clientName)
+                {
+                    Broadcast(so, r.room.client2);
+                }
+                else
+                {
+                    Broadcast(so, r.room.client1);
+                }
                 break;
         }
     }

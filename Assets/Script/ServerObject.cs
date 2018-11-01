@@ -52,6 +52,16 @@ public class ServerObject : ISerializable
         return (int)dictionary[key];
     }
 
+    public void PutFloat(string key, float value)
+    {
+        dictionary.Add(key, value);
+    }
+
+    public float GetFloat(string key)
+    {
+        return (float)dictionary[key];
+    }
+
     public void PutString(string key, string value)
     {
         dictionary.Add(key, value);
