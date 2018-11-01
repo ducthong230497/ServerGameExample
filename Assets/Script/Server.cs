@@ -19,7 +19,7 @@ public class Server : MonoBehaviour {
     private TcpListener server;
     private bool isServerStarted;
 
-    public List<RoomMono> listRoom;
+    public static List<RoomMono> listRoom;
 
     private void Awake()
     {
@@ -266,6 +266,7 @@ public class Server : MonoBehaviour {
         int roomID;
         RoomMono r;
         List<ServerClient> tempClients;
+        List<Room> roomTemp = new List<Room>();
 
         switch (cmd)
         {
@@ -338,8 +339,13 @@ public class Server : MonoBehaviour {
                 break;
             case ConstantData.GET_LIST_ROOM:
                 serverObject.PutString("cmd", ConstantData.GET_LIST_ROOM);
-                serverObject.PutList<RoomMono>("listRoom", listRoom);
+                foreach (var item in listRoom)
+                {
+                    roomTemp.Add(item.room);
+                }
+                serverObject.PutList<Room>("listRoom", roomTemp);
                 Broadcast(serverObject, client);
+                roomTemp.Clear();
                 break;
             case ConstantData.GET_ROOM_INFO:
                 roomID = so.GetInt("roomID");
@@ -387,6 +393,11 @@ public class Server : MonoBehaviour {
 
     private void Update()
     {
+        if (listRoom.Count == 1)
+            if ((listRoom[0].room) != null)
+                Debug.Log(listRoom[0].room);
+            else
+                Debug.LogError("ROOM NULL");
         if (!isServerStarted) return;
 
         foreach (var client in clients)

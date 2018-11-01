@@ -26,7 +26,7 @@ public class Client : MonoBehaviour
     public Action<string, int> onJoinRoomResponse;
     public Action<string> onPlayerJoinRoomResponse;
     public Action<string, string> onGetRoomInfoResponse;
-    public Action<List<RoomMono>> onGetListRoom;
+    public Action<List<Room>> onGetListRoom;
     public Action onGuestReady;
     public Action onStartGame;
     public Action<float, float, float> onUpdateOponentRoation;
@@ -161,7 +161,7 @@ public class Client : MonoBehaviour
                 onJoinRoomResponse(so.GetString("isHost"), so.GetInt("roomID"));
                 break;
             case ConstantData.GET_LIST_ROOM:
-                onGetListRoom(so.GetList<RoomMono>("listRoom"));
+                onGetListRoom(so.GetList<Room>("listRoom"));
                 break;
             case ConstantData.GET_ROOM_INFO:
                 onGetRoomInfoResponse(so.GetString("client1"), so.GetString("client2"));

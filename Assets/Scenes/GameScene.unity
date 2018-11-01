@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -308,7 +308,6 @@ GameObject:
   - component: {fileID: 954864419}
   - component: {fileID: 954864423}
   - component: {fileID: 954864421}
-  - component: {fileID: 954864422}
   m_Layer: 0
   m_Name: car_black_1
   m_TagString: Untagged
@@ -400,20 +399,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.71, y: 1.31}
   m_EdgeRadius: 0
---- !u!114 &954864422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 954864418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5896e871cce750b4c830fc878f374efa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pushForce: 10
-  rotateSpeed: 10
-  canControll: 0
 --- !u!50 &954864423
 Rigidbody2D:
   serializedVersion: 4
@@ -2159,7 +2144,6 @@ GameObject:
   - component: {fileID: 1688348191}
   - component: {fileID: 1688348194}
   - component: {fileID: 1688348190}
-  - component: {fileID: 1688348193}
   m_Layer: 0
   m_Name: car_blue_1
   m_TagString: Untagged
@@ -2251,20 +2235,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1688348193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1688348189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5896e871cce750b4c830fc878f374efa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pushForce: 100
-  rotateSpeed: 50
-  canControll: 1
 --- !u!50 &1688348194
 Rigidbody2D:
   serializedVersion: 4
@@ -2285,3 +2255,47 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &1719687084
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1719687086}
+  - component: {fileID: 1719687085}
+  m_Layer: 0
+  m_Name: CarController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1719687085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1719687084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5896e871cce750b4c830fc878f374efa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blackCar: {fileID: 954864418}
+  blueCar: {fileID: 1688348189}
+  pushForce: 50
+  rotateSpeed: 50
+--- !u!4 &1719687086
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1719687084}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -39,7 +39,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 61f562c0e1742b44cbf1a02c1a2e38a4, type: 3}
   - {fileID: 21300000, guid: dfbe60d021055574cad3140b800639d6, type: 3}
   - {fileID: 21300000, guid: 651cb3e073872994fa2832d554bcceaa, type: 3}
-  - {fileID: 21300000, guid: 452367f09f2aced4fa46bc3ac392e133, type: 3}
   - {fileID: 21300000, guid: bd71fef02cabdce4fa44523c7722db90, type: 3}
   - {fileID: 21300000, guid: 153b6e01328eb66429b7e86e4204aeaa, type: 3}
   - {fileID: 21300000, guid: 47f15f115d6c85f4b900d2d2d6596e94, type: 3}
@@ -49,20 +48,16 @@ SpriteAtlas:
   - {fileID: 21300000, guid: d345299196bc2074b964a76ee4b9ec9f, type: 3}
   - {fileID: 21300000, guid: 1b4afbc16c114da409f8cdeb9f473351, type: 3}
   - {fileID: 21300000, guid: d3f706e12f559974cb2296f4e1b3fa3d, type: 3}
-  - {fileID: 21300000, guid: fa4a9ee1286dcf84da86a46b470e5fd8, type: 3}
   - {fileID: 21300000, guid: 1fd22d12312dbfa47a5d41081af5e023, type: 3}
   - {fileID: 21300000, guid: 2e9f9e52bd376ce42841a8def8a365da, type: 3}
   - {fileID: 21300000, guid: 122f57a28fe14384b9126723bec32a9c, type: 3}
   - {fileID: 21300000, guid: a021dcd27fc44e34691ddf47594fe46e, type: 3}
   - {fileID: 21300000, guid: 1bd38ef234ed2514b83a89a7a94bb2ec, type: 3}
   - {fileID: 21300000, guid: cbbeec230a13c5f429a96f0ab2d024b9, type: 3}
-  - {fileID: 21300000, guid: 10a0d2a32dc41e24e9c84c5a8cc62501, type: 3}
-  - {fileID: 21300000, guid: 8f40f1b3c862fd44e8182bd4f7d0ed04, type: 3}
   - {fileID: 21300000, guid: 890dbcc3e3df79f41aa510f54582b772, type: 3}
   - {fileID: 21300000, guid: b6d5abe32a3b0a548b6620c2d31de359, type: 3}
   - {fileID: 21300000, guid: 940755f39219a4f46b7905939199e090, type: 3}
   - {fileID: 21300000, guid: 3194ed14ecabb7049adb2b952aab5ee9, type: 3}
-  - {fileID: 21300000, guid: 3ab1274491f44d443a98279326dc83ed, type: 3}
   - {fileID: 21300000, guid: e787fd44482d6d0408844c8772facf56, type: 3}
   - {fileID: 21300000, guid: 52d90025a3486bc47b77270b64126428, type: 3}
   - {fileID: 21300000, guid: ca69a48584097cb4f8638e2cf46ab375, type: 3}
@@ -73,8 +68,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 88165196672233f49bc31606bdfba15e, type: 3}
   - {fileID: 21300000, guid: fc34ed967bee2f74ca6fcb854795ef91, type: 3}
   - {fileID: 21300000, guid: 0452e6c688fac0b4787afa35d4dabd5b, type: 3}
-  - {fileID: 21300000, guid: deb40cc67557a7e4a9ac42cc4d074934, type: 3}
-  - {fileID: 21300000, guid: 6e63326750bd9e24396c0146c4ee6743, type: 3}
   - {fileID: 21300000, guid: f93d8c679b84d034093eb8fae84f14b1, type: 3}
   - {fileID: 21300000, guid: 7a6a6e87a0b43614aa363c43d421e671, type: 3}
   - {fileID: 21300000, guid: 345cdc975f975b54584505792ae22675, type: 3}
@@ -105,24 +98,31 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0f20412cdc78238449d5e3d1550a9381, type: 3}
   - {fileID: 21300000, guid: ba5e714c0a4d5fb429c03483b560dea7, type: 3}
   - {fileID: 21300000, guid: 79f37c5c8e9e7ef4f91106cd66bb73c5, type: 3}
-  - {fileID: 21300000, guid: a04825acd23e6e547a02d3c96db9c202, type: 3}
   - {fileID: 21300000, guid: 24d9c0bc8eb14d349b51643091de733f, type: 3}
   - {fileID: 21300000, guid: 8cd91fcc0207e1841b69397e36e112d1, type: 3}
   - {fileID: 21300000, guid: aab420fc9e1a994459188efead7f67b7, type: 3}
   - {fileID: 21300000, guid: 8040e73db21bfdb40aa2809dabf11462, type: 3}
   - {fileID: 21300000, guid: 815d4d3d801884b42bafa0e6cb665343, type: 3}
-  - {fileID: 21300000, guid: 76358a5da1b6db8479fdeea8c1461caa, type: 3}
-  - {fileID: 21300000, guid: 61574e7d2cc3ed846b7a8e283c633101, type: 3}
   - {fileID: 21300000, guid: 1d20d3ad939d75e4687cf67bdcc1258d, type: 3}
   - {fileID: 21300000, guid: 27d4f9bd56e96754d8a468fad9286c9f, type: 3}
   - {fileID: 21300000, guid: 12d17acdbb8f9ff4986c24a5826cf4c2, type: 3}
   - {fileID: 21300000, guid: 4d63a5ddbff642f4baf01122825f0d80, type: 3}
   - {fileID: 21300000, guid: 6aa46ceda94216b4da4b3f1a6434bd70, type: 3}
-  - {fileID: 21300000, guid: ce72557e9e24de248a47892b26febe27, type: 3}
-  - {fileID: 21300000, guid: 7a1df89e5884ebd49a9a6966c3e55cf5, type: 3}
   - {fileID: 21300000, guid: 04945e0ffc068dc449040b72e7a45c79, type: 3}
   - {fileID: 21300000, guid: bae1c71f0c7b3d348abe49e52e7d7acf, type: 3}
   - {fileID: 21300000, guid: 33901d4fa071c2b468a05d10981ded07, type: 3}
+  - {fileID: 21300000, guid: 10a0d2a32dc41e24e9c84c5a8cc62501, type: 3}
+  - {fileID: 21300000, guid: a04825acd23e6e547a02d3c96db9c202, type: 3}
+  - {fileID: 21300000, guid: deb40cc67557a7e4a9ac42cc4d074934, type: 3}
+  - {fileID: 21300000, guid: 61574e7d2cc3ed846b7a8e283c633101, type: 3}
+  - {fileID: 21300000, guid: 452367f09f2aced4fa46bc3ac392e133, type: 3}
+  - {fileID: 21300000, guid: fa4a9ee1286dcf84da86a46b470e5fd8, type: 3}
+  - {fileID: 21300000, guid: 3ab1274491f44d443a98279326dc83ed, type: 3}
+  - {fileID: 21300000, guid: 6e63326750bd9e24396c0146c4ee6743, type: 3}
+  - {fileID: 21300000, guid: 76358a5da1b6db8479fdeea8c1461caa, type: 3}
+  - {fileID: 21300000, guid: ce72557e9e24de248a47892b26febe27, type: 3}
+  - {fileID: 21300000, guid: 8f40f1b3c862fd44e8182bd4f7d0ed04, type: 3}
+  - {fileID: 21300000, guid: 7a1df89e5884ebd49a9a6966c3e55cf5, type: 3}
   m_PackedSpriteNamesToIndex:
   - road_asphalt04
   - road_asphalt63
@@ -130,7 +130,6 @@ SpriteAtlas:
   - road_asphalt82
   - road_asphalt05
   - road_asphalt16
-  - road_asphalt52
   - road_asphalt43
   - road_asphalt41
   - road_asphalt56
@@ -140,20 +139,16 @@ SpriteAtlas:
   - road_asphalt29
   - road_asphalt90
   - road_asphalt10
-  - road_asphalt32
   - road_asphalt35
   - road_asphalt60
   - road_asphalt71
   - road_asphalt02
   - road_asphalt51
   - road_asphalt81
-  - road_asphalt62
-  - road_asphalt12
   - road_asphalt48
   - road_asphalt06
   - road_asphalt89
   - road_asphalt72
-  - road_asphalt53
   - road_asphalt75
   - road_asphalt80
   - road_asphalt86
@@ -164,8 +159,6 @@ SpriteAtlas:
   - road_asphalt87
   - road_asphalt76
   - road_asphalt36
-  - road_asphalt08
-  - road_asphalt18
   - road_asphalt84
   - road_asphalt85
   - road_asphalt88
@@ -196,23 +189,30 @@ SpriteAtlas:
   - road_asphalt09
   - road_asphalt21
   - road_asphalt79
-  - road_asphalt65
   - road_asphalt33
   - road_asphalt42
   - road_asphalt77
   - road_asphalt27
   - road_asphalt03
-  - road_asphalt50
-  - road_asphalt11
   - road_asphalt39
   - road_asphalt30
   - road_asphalt46
   - road_asphalt28
   - road_asphalt54
-  - road_asphalt15
-  - road_asphalt66
   - road_asphalt69
   - road_asphalt47
   - road_asphalt45
+  - road_asphalt62
+  - road_asphalt65
+  - road_asphalt08
+  - road_asphalt11
+  - road_asphalt52
+  - road_asphalt32
+  - road_asphalt53
+  - road_asphalt18
+  - road_asphalt50
+  - road_asphalt15
+  - road_asphalt12
+  - road_asphalt66
   m_Tag: AsphaltRoadAtlas
   m_IsVariant: 0

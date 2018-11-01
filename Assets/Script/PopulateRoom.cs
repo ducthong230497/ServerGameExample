@@ -95,16 +95,16 @@ public class PopulateRoom : MonoBehaviour {
         client.SendData(so);
     }
 
-    private void OnGetListRoom(List<RoomMono> listRoom)
+    private void OnGetListRoom(List<Room> listRoom)
     {
-        foreach (var roomMono in listRoom)
+        foreach (var room in listRoom)
         {
             GameObject r = Instantiate(Room, transform);
-            r.GetComponent<RoomMono>().room = new Room();
+            r.GetComponent<RoomMono>().room = room;
             r.GetComponent<RoomMono>().room.onRoomClicked = OnRoomClicked;
-            r.GetComponent<RoomMono>().room.roomID = roomMono.room.roomID;
-            r.GetComponent<RoomMono>().room.client1 = roomMono.room.client1;
-            r.GetComponent<RoomMono>().room.client2 = roomMono.room.client2;
+            //r.GetComponent<RoomMono>().room.roomID = room.roomID;
+            //r.GetComponent<RoomMono>().room.client1 = room.client1;
+            //r.GetComponent<RoomMono>().room.client2 = room.client2;
             this.listRoom.Add(r.GetComponent<RoomMono>());
         }
     }
