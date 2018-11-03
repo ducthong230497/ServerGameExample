@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour {
             server = Instantiate(serverPref).GetComponent<Server>();
             if (!server.Init(port))
             {
-                Debug.LogError("Can not initialize server");
+                LogController.LogError("Can not initialize server");
                 return;
             }
             server.StartServer();
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour {
         }
         catch (SocketException e)
         {
-            Debug.LogError(e.Message);
+            LogController.LogError(e.Message);
         }
     }
 
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour {
         }
         catch (Exception e)
         {
-            Debug.LogError(e.Message);
+            LogController.LogError(e.Message);
         }
     }
 
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour {
             Server server = Instantiate(serverPref).GetComponent<Server>();
             if (!server.Init(port))
             {
-                Debug.LogError("Can not initialize server");
+                LogController.LogError("Can not initialize server");
                 return;
             }
             server.StartServer();
@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour {
         }
         catch (Exception e)
         {
-            Debug.LogError(e.Message);
+            LogController.LogError(e.Message);
         }
 
         try
@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour {
         }
         catch (Exception e)
         {
-            Debug.LogError(e.Message);
+            LogController.LogError(e.Message);
         }
     }
 

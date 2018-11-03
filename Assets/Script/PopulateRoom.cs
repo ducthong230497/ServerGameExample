@@ -23,7 +23,7 @@ public class PopulateRoom : MonoBehaviour {
 
         float screenSizeIgnorePadding = Screen.width - 2 * gridLayout.padding.left;
         amount = Mathf.FloorToInt(screenSizeIgnorePadding / gridLayout.cellSize.x);
-        Debug.Log("amount: " + amount);
+        LogController.Log(amount.ToString(), "amount" );
         float maxUsedSize = gridLayout.cellSize.x * amount;
         float sizeLeftOver = screenSizeIgnorePadding - maxUsedSize;
         float newSpacing = Mathf.FloorToInt(sizeLeftOver / (amount - 1));
@@ -41,13 +41,14 @@ public class PopulateRoom : MonoBehaviour {
         PlayerPrefs.SetString("clientName", client.ClientName);
         if(host == 1)
         {
-            PlayerPrefs.SetString("isHost", "true");
+            client.IsHostRoom = true;
         }
         else
         {
-            PlayerPrefs.SetString("isHost", "false");
+            client.IsHostRoom = false;
         }
-        StartCoroutine(MoveToWaitingRoom());
+
+        GameManager.Instance.LoadScene("WaitingRoomScene");
     }
 
     public void CreateRoom()
@@ -77,13 +78,7 @@ public class PopulateRoom : MonoBehaviour {
             }
         }
         else
-            Debug.Log("Fail to create room");
-    }
-
-    private IEnumerator MoveToWaitingRoom()
-    {
-        yield return new WaitForSeconds(2);
-        GameManager.Instance.LoadScene("WaitingRoomScene");
+            LogController.LogError("Fail to create room");
     }
 
     private void OnRoomClicked(int roomID)

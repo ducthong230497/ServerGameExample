@@ -41,7 +41,7 @@ public class Server : MonoBehaviour {
         }
         catch (Exception e)
         {
-            Debug.LogError(e.Message);
+            LogController.LogError(e.Message);
         }
         return false;
     }
@@ -88,7 +88,7 @@ public class Server : MonoBehaviour {
 
         Broadcast(so, client);
 
-        Debug.Log("Somebody has connected!");
+        LogController.Log("Somebody has connected!");
     }
 
     private bool IsClientStillConnected(TcpClient tcp)
@@ -104,7 +104,7 @@ public class Server : MonoBehaviour {
         }
         catch (Exception e)
         {
-            Debug.LogError(e.Message);
+            LogController.LogError(e.Message);
             return false;
         }
         return false;
@@ -122,7 +122,7 @@ public class Server : MonoBehaviour {
             }
             catch (Exception e)
             {
-                Debug.LogError(e.Message);
+                LogController.LogError(e.Message);
             }
         }
     }
@@ -149,7 +149,7 @@ public class Server : MonoBehaviour {
             }
             catch (Exception e)
             {
-                Debug.LogError(e.Message);
+                LogController.LogError(e.Message);
             }
         }
     }
@@ -168,7 +168,7 @@ public class Server : MonoBehaviour {
 
     private void OnInCommingData(ServerClient client, string data)
     {
-        Debug.Log(client.clientName + ": "+ data);
+        LogController.Log(client.clientName + ": "+ data);
 
         string[] msg = data.Split('|');
         int roomID;
@@ -198,7 +198,7 @@ public class Server : MonoBehaviour {
                 newRoom.room = new Room();
                 newRoom.room.roomID = listRoom.Count;
                 Broadcast(ConstantData.CREATE_ROOM_RESPONSE+ "|success|"+listRoom.Count, clients);
-                Debug.Log("Create new room success");
+                LogController.Log("Create new room success");
                 break;
             case ConstantData.JOIN_ROOM:
                 roomID = Convert.ToInt32(msg[2]);
@@ -226,14 +226,14 @@ public class Server : MonoBehaviour {
                 }
                 else if(r.room.numberPlayer == 2)
                 {
-                    Debug.Log("Room is full");
+                    LogController.Log("Room is full");
                 }
                 break;
             case ConstantData.GET_ROOM_INFO:
                 roomID = Convert.ToInt32(msg[1]);
                 r = listRoom[roomID - 1];
                 tempClients = new List<ServerClient> { r.room.client1, r.room.client2 };
-                Broadcast(ConstantData.GET_ROOM_INFO_RESPONSE + "|" + r.room.client1.clientName + "|" + r.room.client2.clientName, tempClients);
+                Broadcast(ConstantData.GET_ROOM_INFO + "|" + r.room.client1.clientName + "|" + r.room.client2.clientName, tempClients);
                 break;
             case ConstantData.GUEST_READY:
                 roomID = Convert.ToInt32(msg[1]);
@@ -257,11 +257,9 @@ public class Server : MonoBehaviour {
     private void OnInCommingData(ServerClient client, ServerObject so)
     {
         ServerObject serverObject = new ServerObject();
-
-        Debug.Log(so);
+        
         string cmd = so.GetString("cmd");
-
-
+        
         string[] msg = null;
         int roomID;
         RoomMono r;
@@ -300,7 +298,7 @@ public class Server : MonoBehaviour {
                 serverObject.PutString("msg", "success");
                 serverObject.PutInt("roomID", listRoom.Count);
                 Broadcast(serverObject, clients);
-                Debug.Log("Create new room success");
+                LogController.Log("Create new room success");
                 break;
             case ConstantData.JOIN_ROOM:
                 roomID = so.GetInt("roomID");
@@ -334,7 +332,7 @@ public class Server : MonoBehaviour {
                 }
                 else if (r.room.numberPlayer == 2)
                 {
-                    Debug.Log("Room is full");
+                    LogController.Log("Room is full");
                 }
                 break;
             case ConstantData.GET_LIST_ROOM:
@@ -388,16 +386,23 @@ public class Server : MonoBehaviour {
                     Broadcast(so, r.room.client1);
                 }
                 break;
+            case ConstantData.UPDATE_PLAYER_SPEED:
+                roomID = so.GetInt("roomID");
+                r = listRoom[roomID - 1];
+                if (r.room.client1.clientName == client.clientName)
+                {
+                    Broadcast(so, r.room.client2);
+                }
+                else
+                {
+                    Broadcast(so, r.room.client1);
+                }
+                break;
         }
     }
 
     private void Update()
     {
-        if (listRoom.Count == 1)
-            if ((listRoom[0].room) != null)
-                Debug.Log(listRoom[0].room);
-            else
-                Debug.LogError("ROOM NULL");
         if (!isServerStarted) return;
 
         foreach (var client in clients)
@@ -406,7 +411,7 @@ public class Server : MonoBehaviour {
             {
                 client.tcp.Close();
                 disconnectClients.Add(client);
-                Debug.Log(client.clientName + " has disconnected");
+                LogController.Log(client.clientName + " has disconnected");
                 continue;
             }
             else

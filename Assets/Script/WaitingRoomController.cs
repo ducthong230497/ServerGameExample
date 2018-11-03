@@ -13,7 +13,6 @@ public class WaitingRoomController : MonoBehaviour {
     private Text startReadyText;
 
     private Client client;
-    private bool isHost;
     private bool isReady;
     private string start = "Start";
     private string ready = "Ready";
@@ -31,35 +30,29 @@ public class WaitingRoomController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        if (PlayerPrefs.HasKey("isHost"))
+        if (client.IsHostRoom)
         {
-            isHost = Convert.ToBoolean(PlayerPrefs.GetString("isHost"));
-            if(isHost)
-            {
-                TMPro_client1.text = PlayerPrefs.GetString("clientName");
-                startReadyText.text = start;
-                btnReadyStart.interactable = false;
-                btnReadyStart.onClick.AddListener(OnStartClicked);
-            }
-            else
-            {
-                TMPro_client2.text = PlayerPrefs.GetString("clientName");
-                ServerObject so = new ServerObject();
-                so.PutString("cmd", ConstantData.GET_ROOM_INFO);
-                so.PutInt("roomID", client.LastJoinRoom);
-                client.SendData(so);
-                startReadyText.text = ready;
-                btnReadyStart.interactable = true;
-                btnReadyStart.onClick.AddListener(OnReadyClicked);
-            }
+            TMPro_client1.text = PlayerPrefs.GetString("clientName");
+            startReadyText.text = start;
+            btnReadyStart.interactable = false;
+            btnReadyStart.onClick.AddListener(OnStartClicked);
         }
-
-        
-	}
+        else
+        {
+            TMPro_client2.text = PlayerPrefs.GetString("clientName");
+            ServerObject so = new ServerObject();
+            so.PutString("cmd", ConstantData.GET_ROOM_INFO);
+            so.PutInt("roomID", client.LastJoinRoom);
+            client.SendData(so);
+            startReadyText.text = ready;
+            btnReadyStart.interactable = true;
+            btnReadyStart.onClick.AddListener(OnReadyClicked);
+        }
+    }
 
     private void GetRoomInfo(string client1, string client2)
     {
-        if(isHost)
+        if(client.IsHostRoom)
         {
             TMPro_client2.text = client2;
         }

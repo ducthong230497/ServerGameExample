@@ -13,11 +13,13 @@ public class Client : MonoBehaviour
 
     private bool isSocketReady;
     private TcpClient socket;
+    private UdpClient socketUDP;
     private NetworkStream networkStream;
     private StreamWriter streamWriter;
     private StreamReader streamReader;
     public string ClientName { get; set; }
     public int LastJoinRoom { get; set; }
+    public bool IsHostRoom { get; set; }
 
     private List<GameClient> players = new List<GameClient>();
     private GameManager gameManager;
@@ -30,6 +32,7 @@ public class Client : MonoBehaviour
     public Action onGuestReady;
     public Action onStartGame;
     public Action<float, float, float> onUpdateOponentRoation;
+    public Action<float, float> onUpdatePlayerSpeed;
 
     private Text announceText;
     private void Awake()
@@ -59,7 +62,7 @@ public class Client : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError(e.Message);
+            LogController.LogError(e.Message);
         }
         return isSocketReady;
     }
@@ -129,8 +132,7 @@ public class Client : MonoBehaviour
     private void OnInComingData(ServerObject so)
     {
         ServerObject serverObject = new ServerObject();
-
-        Debug.Log(so);
+        
         string cmd = so.GetString("cmd");
         string[] msg = null;
 
@@ -175,6 +177,9 @@ public class Client : MonoBehaviour
                 break;
             case ConstantData.UPDATE_PLAYER_ROTATION:
                 onUpdateOponentRoation(so.GetFloat("x"), so.GetFloat("y"), so.GetFloat("z"));
+                break;
+            case ConstantData.UPDATE_PLAYER_SPEED:
+                onUpdatePlayerSpeed(so.GetFloat("x"), so.GetFloat("y"));
                 break;
         }
     }
