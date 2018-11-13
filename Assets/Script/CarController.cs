@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
+
+using Object = UnityEngine.Object;
 
 public class CarController : MonoBehaviour {
     [SerializeField] GameObject blackCar;
@@ -23,6 +27,29 @@ public class CarController : MonoBehaviour {
 
     private void Awake()
     {
+        //string str = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone);
+        //Debug.Log(str);
+        //PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "test");
+        //Debug.Log(PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone));
+
+        // Load the Scriptable Singleton from disk. (it should only have one entry but YAML supports more then one)
+        Object[] loadedObjects = InternalEditorUtility.LoadSerializedFileAndForget("ProjectSettings/ProjectSettings.asset");
+        loadedObjects = AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset");
+        // Create a serialized object to let use change it's settings. 
+        SerializedObject projectSettings = new SerializedObject(loadedObjects[0]);
+        // Find the property we need to modify
+        SerializedProperty symbols = projectSettings.FindProperty("scriptingDefineSymbols");
+        // Add a new element to the end
+        //symbols.InsertArrayElementAtIndex(symbols.arraySize);
+        // Set the new element. 
+        //symbols.GetArrayElementAtIndex(symbols.arraySize - 1) = "RR_DEV";
+        string value = symbols.stringValue;
+        symbols.stringValue = "test";
+        // Apply changes. 
+        projectSettings.ApplyModifiedProperties();
+        // Save it back to disk.
+        //InternalEditorUtility.SaveToSerializedFileAndForget(projectSettings.targetObjects, "ProjectSettings.asset", true);
+
         client = GameObject.Find("Client(Clone)").GetComponent<Client>();
         client.onUpdateOponentRoation += OnUpdateOpponentRotation;
         client.onUpdatePlayerSpeed += OnUpdateOpponentSpeed;

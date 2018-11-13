@@ -32,7 +32,85 @@ SpriteAtlas:
     - {fileID: 102900000, guid: ac44903d4651be84988c9fd20cc857f6, type: 3}
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: b40f0510847a69c4693316f4d52c243a, type: 3}
+  - {fileID: 21300000, guid: 09a50bf05bd23c94291f1001a99f4c9f, type: 3}
+  - {fileID: 21300000, guid: f88871214e8439f4695b565a5785f465, type: 3}
+  - {fileID: 21300000, guid: ab1cfa41ae3d14d43b0e9dd02499337f, type: 3}
+  - {fileID: 21300000, guid: fd168b523a1ba31469fb713f41731335, type: 3}
+  - {fileID: 21300000, guid: 739f1062c92d4274b8c0db1c89485b25, type: 3}
+  - {fileID: 21300000, guid: ec73918297c02e04ba5e7cc937860857, type: 3}
+  - {fileID: 21300000, guid: f417ca93061679f4f8a1997619233353, type: 3}
+  - {fileID: 21300000, guid: 5934abd3219c63442bbd24b6ec1f7250, type: 3}
+  - {fileID: 21300000, guid: 45494514ee5830d40a1530a874a14684, type: 3}
+  - {fileID: 21300000, guid: 2b6531c4989af2342a0e2fee5068b5f9, type: 3}
+  - {fileID: 21300000, guid: 8c0506c4faac0514d86afb4ebec0945e, type: 3}
+  - {fileID: 21300000, guid: 79b8bcb5b3d16f147b19398e18c6583a, type: 3}
+  - {fileID: 21300000, guid: b78d6ce69c703b54aadaafe01065d81b, type: 3}
+  - {fileID: 21300000, guid: 8ed5724725daa1d40b235bed7fef931c, type: 3}
+  - {fileID: 21300000, guid: 308c0e680c7e768448639913feb985c1, type: 3}
+  - {fileID: 21300000, guid: 3c63e1d8fa531c14ea0491ddb34ed399, type: 3}
+  - {fileID: 21300000, guid: a66e042919c0ba845978fd991a52e233, type: 3}
+  - {fileID: 21300000, guid: b7f036595f3178c489ed0529d5c3f77b, type: 3}
+  - {fileID: 21300000, guid: 501781b915def87439c52182c35b0659, type: 3}
+  - {fileID: 21300000, guid: 855b331a63fdb6e46a55bd1df4802997, type: 3}
+  - {fileID: 21300000, guid: 631e593ac88c8d44a9745f73f8926763, type: 3}
+  - {fileID: 21300000, guid: 852f5d6a213c6504e80e7b75e33718d6, type: 3}
+  - {fileID: 21300000, guid: 9b1e5c7a0679cbd429b6d2db4cc8b962, type: 3}
+  - {fileID: 21300000, guid: c00638ca86c9fe148a6171f99c1a8cca, type: 3}
+  - {fileID: 21300000, guid: a64609bb8975e9f4d9906eb30fd09a7d, type: 3}
+  - {fileID: 21300000, guid: 1ea9031c9d06a154f80ddb284517c497, type: 3}
+  - {fileID: 21300000, guid: 57dfc5bc0fdf6ec4197100ceb7adb1af, type: 3}
+  - {fileID: 21300000, guid: 84e514dc94ffa874e9a7c29eb7d4986c, type: 3}
+  - {fileID: 21300000, guid: 611957dc088112c469dd58922a379a82, type: 3}
+  - {fileID: 21300000, guid: 9e1b25eceed6c564b8b553b6a4544b1b, type: 3}
+  - {fileID: 21300000, guid: 6766dfec28e911a40b35d627dcc587c8, type: 3}
+  - {fileID: 21300000, guid: a9e1031d883407b48a72e3796e695e89, type: 3}
+  - {fileID: 21300000, guid: 6472f1eda8807b943af98dab70887291, type: 3}
+  - {fileID: 21300000, guid: 3b2b8eae944620a44b20fb2a23cc2c93, type: 3}
+  - {fileID: 21300000, guid: 92cc49dec4b1a0a4b882917ab88dd7c6, type: 3}
+  - {fileID: 21300000, guid: 5877dbfe290c01841a7b5a8110c07e17, type: 3}
+  - {fileID: 21300000, guid: 05fab1df9dcee3b44aeea41740c4a266, type: 3}
+  - {fileID: 21300000, guid: 1d80fcdf6977f8b43937212d3afea090, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - tent_red
+  - barrier_white
+  - barrier_white_race
+  - oil
+  - arrow_white
+  - skidmark_short_3
+  - tires_red
+  - tree_large
+  - tent_blue_large
+  - tree_small
+  - barrel_blue_down
+  - light_yellow
+  - skidmark_short_1
+  - lights
+  - tribune_overhang_red
+  - arrow_yellow
+  - barrier_red_race
+  - tent_blue
+  - tires_red_alt
+  - tires_white_alt
+  - barrier_red
+  - barrel_red
+  - barrel_blue
+  - tribune_empty
+  - cone_down
+  - tribune_overhang_striped
+  - rock2
+  - tires_white
+  - cone_straight
+  - rock1
+  - skidmark_short_2
+  - rock3
+  - skidmark_long_3
+  - skidmark_long_2
+  - skidmark_long_1
+  - barrel_red_down
+  - light_white
+  - tribune_full
+  - tent_red_large
   m_Tag: ObjectAtlas
   m_IsVariant: 0
