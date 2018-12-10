@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641252, b: 0.5748167, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4073,7 +4073,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blackCar: {fileID: 954864418}
   blueCar: {fileID: 1688348189}
-  pushForce: 50
+  pushForce: 0
   rotateSpeed: 50
 --- !u!4 &1719687086
 Transform:

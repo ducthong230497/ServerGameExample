@@ -398,6 +398,30 @@ public class Server : MonoBehaviour {
                     Broadcast(so, r.room.client1);
                 }
                 break;
+            case ConstantData.USER_MOVE_UP:
+                roomID = so.GetInt("roomID");
+                r = listRoom[roomID - 1];
+                if (r.room.client1.clientName == client.clientName)
+                {
+                    serverObject.PutString("cmd", ConstantData.USER_MOVE_UP);
+                    serverObject.PutFloat("speed", 1.0f);
+                    Broadcast(serverObject, r.room.client1);
+                    serverObject = new ServerObject();
+                    serverObject.PutString("cmd", ConstantData.OPPONENT_MOVE_UP);
+                    serverObject.PutFloat("speed", 1.0f);
+                    Broadcast(serverObject, r.room.client2);
+                }
+                else
+                {
+                    serverObject.PutString("cmd", ConstantData.USER_MOVE_UP);
+                    serverObject.PutFloat("speed", 1.0f);
+                    Broadcast(serverObject, r.room.client2);
+                    serverObject = new ServerObject();
+                    serverObject.PutString("cmd", ConstantData.OPPONENT_MOVE_UP);
+                    serverObject.PutFloat("speed", 1.0f);
+                    Broadcast(serverObject, r.room.client1);
+                }
+                break;
         }
     }
 

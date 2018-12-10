@@ -33,6 +33,8 @@ public class Client : MonoBehaviour
     public Action onStartGame;
     public Action<float, float, float> onUpdateOponentRoation;
     public Action<float, float> onUpdatePlayerSpeed;
+    public Action<float> onUserMoveUp;
+    public Action<float> onOpponentMoveUp;
 
     private Text announceText;
     private void Awake()
@@ -180,6 +182,12 @@ public class Client : MonoBehaviour
                 break;
             case ConstantData.UPDATE_PLAYER_SPEED:
                 onUpdatePlayerSpeed(so.GetFloat("x"), so.GetFloat("y"));
+                break;
+            case ConstantData.USER_MOVE_UP:
+                onUserMoveUp(so.GetFloat("speed"));
+                break;
+            case ConstantData.OPPONENT_MOVE_UP:
+                onOpponentMoveUp(so.GetFloat("speed"));
                 break;
         }
     }

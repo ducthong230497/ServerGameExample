@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 
 using Object = UnityEngine.Object;
@@ -10,7 +9,7 @@ using Object = UnityEngine.Object;
 public class CarController : MonoBehaviour {
     [SerializeField] GameObject blackCar;
     [SerializeField] GameObject blueCar;
-    [SerializeField] private int pushForce = 100;
+    [SerializeField] private float pushForce = 0;
     [SerializeField] private int rotateSpeed = 50;
 
     private Client client;
@@ -22,6 +21,7 @@ public class CarController : MonoBehaviour {
 
     private GameObject me;
     private GameObject opponent;
+    private float opponentPushForce;
 
     private bool moveForward;
 
@@ -32,27 +32,11 @@ public class CarController : MonoBehaviour {
         //PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "test");
         //Debug.Log(PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone));
 
-        // Load the Scriptable Singleton from disk. (it should only have one entry but YAML supports more then one)
-        Object[] loadedObjects = InternalEditorUtility.LoadSerializedFileAndForget("ProjectSettings/ProjectSettings.asset");
-        loadedObjects = AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset");
-        // Create a serialized object to let use change it's settings. 
-        SerializedObject projectSettings = new SerializedObject(loadedObjects[0]);
-        // Find the property we need to modify
-        SerializedProperty symbols = projectSettings.FindProperty("scriptingDefineSymbols");
-        // Add a new element to the end
-        //symbols.InsertArrayElementAtIndex(symbols.arraySize);
-        // Set the new element. 
-        //symbols.GetArrayElementAtIndex(symbols.arraySize - 1) = "RR_DEV";
-        string value = symbols.stringValue;
-        symbols.stringValue = "test";
-        // Apply changes. 
-        projectSettings.ApplyModifiedProperties();
-        // Save it back to disk.
-        //InternalEditorUtility.SaveToSerializedFileAndForget(projectSettings.targetObjects, "ProjectSettings.asset", true);
-
         client = GameObject.Find("Client(Clone)").GetComponent<Client>();
         client.onUpdateOponentRoation += OnUpdateOpponentRotation;
         client.onUpdatePlayerSpeed += OnUpdateOpponentSpeed;
+        client.onUserMoveUp += onUserMoveUp;
+        client.onOpponentMoveUp += onOpponentMoveUp;
     }
     // Use this for initialization
     void Start () {
@@ -83,25 +67,38 @@ public class CarController : MonoBehaviour {
             client.SendData(serverObject);
         }
 
-        if (Input.GetKey(KeyCode.W))
-            moveForward = true ;
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            serverObject = new ServerObject();
+            serverObject.PutString("cmd", ConstantData.USER_MOVE_UP);
+            serverObject.PutInt("roomID", client.LastJoinRoom);
+            client.SendData(serverObject);
+        }
         else
             moveForward = false;
     }
-
+    void onUserMoveUp(float speed)
+    {
+        pushForce = speed;
+    }
+    void onOpponentMoveUp(float speed)
+    {
+        opponentPushForce = speed;
+    }
     private void FixedUpdate()
     {
-        myRigidbody2D.velocity = ((moveForward ? me.transform.up : Vector3.zero) * pushForce * Time.deltaTime);
-        if (myRigidbody2D.velocity != previousVelocity)
-        {
-            serverObject = new ServerObject();
-            serverObject.PutString("cmd", ConstantData.UPDATE_PLAYER_SPEED);
-            serverObject.PutInt("roomID", client.LastJoinRoom);
-            serverObject.PutFloat("x", myRigidbody2D.velocity.x);
-            serverObject.PutFloat("y", myRigidbody2D.velocity.y);
-            client.SendData(serverObject);
-            previousVelocity = myRigidbody2D.velocity;
-        }
+        myRigidbody2D.AddForce(me.transform.up * pushForce);
+        opponentRigidbody2D.AddForce(me.transform.up * opponentPushForce);
+        //if (myRigidbody2D.velocity != previousVelocity)
+        //{
+        //    serverObject = new ServerObject();
+        //    serverObject.PutString("cmd", ConstantData.UPDATE_PLAYER_SPEED);
+        //    serverObject.PutInt("roomID", client.LastJoinRoom);
+        //    serverObject.PutFloat("x", myRigidbody2D.velocity.x);
+        //    serverObject.PutFloat("y", myRigidbody2D.velocity.y);
+        //    client.SendData(serverObject);
+        //    previousVelocity = myRigidbody2D.velocity;
+        //}
         //opponentRigidbody2D.velocity = ((moveForward ? opponent.transform.up : Vector3.zero) * pushForce * Time.deltaTime);
     }
 
@@ -112,6 +109,6 @@ public class CarController : MonoBehaviour {
 
     private void OnUpdateOpponentSpeed(float x, float y)
     {
-        opponentRigidbody2D.velocity = new Vector2(x, y);
+        opponentRigidbody2D.AddForce(new Vector2(x, y));
     }
 }
