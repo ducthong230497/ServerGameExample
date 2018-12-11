@@ -15,7 +15,8 @@ public class Server : MonoBehaviour {
 
     private List<ServerClient> clients;
     private List<ServerClient> disconnectClients;
-    private List<int> originCardIndex;
+    //private List<int> originCardIndex;
+    private Dictionary<int, int> dictCardValue;
     private List<int> listUsedCards;
 
 
@@ -29,11 +30,15 @@ public class Server : MonoBehaviour {
     private void Awake()
     {
         Instance = this;
-        originCardIndex = new List<int>();
+        //originCardIndex = new List<int>();
+        dictCardValue = new Dictionary<int, int>();
         listUsedCards = new List<int>();
+        int value = 1;
         for (int i = 1; i <= 52; i++)
         {
-            originCardIndex.Add(i);
+            //originCardIndex.Add(i);
+            dictCardValue.Add(i, value);
+            value = i % 4 == 0 ? (value >= 10 ? 10 : value + 1) : value;
         }
     }
 

@@ -71,13 +71,14 @@ public class CountCardDistributeCard : MonoBehaviour {
             if (i % 2 == 0)
             {
                 StartCoroutine(cardMoveToPos(cards[i].transform, stackCardMe.transform.GetChild(j), true));
+                yield return new WaitForSeconds(0.5f);
+                StartCoroutine(FlipCard(cards[i].transform, test));
             }
             else
             {
                 StartCoroutine(cardMoveToPos(cards[i].transform, stackCardOpponent.transform.GetChild(j++), false));
+                yield return new WaitForSeconds(0.5f);
             }
-            yield return new WaitForSeconds(0.5f);
-            StartCoroutine(FlipCard(cards[i].transform, test));
         }
         yield return new WaitForSeconds(0.5f);
         
