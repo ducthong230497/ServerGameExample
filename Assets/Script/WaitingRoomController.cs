@@ -70,7 +70,7 @@ public class WaitingRoomController : MonoBehaviour {
 
     private void StartGame()
     {
-        GameManager.Instance.LoadScene("GameScene");
+        GameManager.Instance.LoadScene("CountCardScene");
     }
 
     public void OnStartClicked()

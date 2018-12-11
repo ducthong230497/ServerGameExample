@@ -15,15 +15,26 @@ public class Server : MonoBehaviour {
 
     private List<ServerClient> clients;
     private List<ServerClient> disconnectClients;
+    private List<int> originCardIndex;
+    private List<int> listUsedCards;
+
 
     private TcpListener server;
     private bool isServerStarted;
 
     public static List<RoomMono> listRoom;
 
+
+
     private void Awake()
     {
         Instance = this;
+        originCardIndex = new List<int>();
+        listUsedCards = new List<int>();
+        for (int i = 1; i <= 52; i++)
+        {
+            originCardIndex.Add(i);
+        }
     }
 
     public bool Init(int port)
@@ -421,6 +432,27 @@ public class Server : MonoBehaviour {
                     serverObject.PutFloat("speed", 1.0f);
                     Broadcast(serverObject, r.room.client1);
                 }
+                break;
+            case ConstantData.GET_CARD:
+                roomID = so.GetInt("roomID");
+                int numPlayer = so.GetInt("numPlayer");
+                r = listRoom[roomID - 1];
+                tempClients = new List<ServerClient> { r.room.client1, r.room.client2 };
+                if (listUsedCards.Count == 0)
+                {
+                    for (int i = 0; i < 3 * numPlayer; i++)
+                    {
+                        int cardIndex = -1;
+                        do
+                        {
+                            cardIndex = UnityEngine.Random.Range(1, 53);
+                        } while (listUsedCards.Contains(cardIndex));
+                        listUsedCards.Add(cardIndex);
+                    }
+                }
+                serverObject.PutString("cmd", ConstantData.GET_CARD);
+                serverObject.PutList("listCardIndex", listUsedCards);
+                Broadcast(serverObject, tempClients);
                 break;
         }
     }

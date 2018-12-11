@@ -19,4 +19,5 @@ public class ConstantData {
     public const string USER_MOVE_UP = "user move up";
     public const string OPPONENT_MOVE_UP = "opponent move up";
     public const string USER_STOP_MOVE_UP = "user stop move up";
+    public const string GET_CARD = "get card";
 }

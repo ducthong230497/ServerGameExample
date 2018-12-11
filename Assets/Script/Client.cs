@@ -35,6 +35,7 @@ public class Client : MonoBehaviour
     public Action<float, float> onUpdatePlayerSpeed;
     public Action<float> onUserMoveUp;
     public Action<float> onOpponentMoveUp;
+    public Action<List<int>> onGetCard;
 
     private Text announceText;
     private void Awake()
@@ -188,6 +189,9 @@ public class Client : MonoBehaviour
                 break;
             case ConstantData.OPPONENT_MOVE_UP:
                 onOpponentMoveUp(so.GetFloat("speed"));
+                break;
+            case ConstantData.GET_CARD:
+                onGetCard(so.GetList<int>("listCardIndex"));
                 break;
         }
     }

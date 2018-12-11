@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: 0ba9babef3b6b99479677b53d314606e
+  - enabled: 1
+    path: Assets/Scenes/CountCardScene.unity
+    guid: 3607b32d43924254fa6e95692c971eb1
   m_configObjects: {}
